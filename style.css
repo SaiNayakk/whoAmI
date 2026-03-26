@@ -846,6 +846,124 @@ footer a {
 
 footer a:hover { color: var(--text); }
 
+/* ── MEME SOUNDBOARD ── */
+#meme-panel {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 230px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 0.7rem 0.85rem;
+  z-index: 9000;
+  display: none;
+  flex-direction: column;
+  gap: 0.45rem;
+  transition: border-color 0.15s;
+  animation: appear 0.15s ease;
+}
+
+#meme-panel.meme-open { display: flex; }
+
+#meme-panel.meme-flash { border-color: var(--accent); }
+
+.meme-header {
+  font-size: 0.65rem;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--border);
+}
+
+#meme-indicator {
+  position: fixed;
+  bottom: 8rem;
+  right: 1.5rem;
+  font-size: 0.65rem;
+  color: var(--accent);
+  font-family: 'IBM Plex Mono', monospace;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 8999;
+}
+
+#meme-indicator.meme-ind-on {
+  opacity: 1;
+  animation: cur-blink 1.4s step-start infinite;
+}
+
+.meme-input-line {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.4rem;
+}
+
+.meme-prompt {
+  color: var(--muted);
+  font-size: 0.72rem;
+  flex-shrink: 0;
+}
+
+#meme-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  flex: 1;
+  min-width: 0;
+  cursor: none !important;
+}
+
+.meme-hint {
+  font-size: 0.6rem;
+  color: var(--muted);
+  opacity: 0.45;
+}
+
+#terminal-cursor.meme-lizard {
+  background: transparent !important;
+  width: auto !important;
+  height: auto !important;
+  font-size: 1.4rem !important;
+  line-height: 1 !important;
+  animation: none !important;
+  mix-blend-mode: normal !important;
+}
+
+@keyframes meme-fall {
+  to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+@keyframes meme-rise {
+  to { transform: translateY(-100vh); opacity: 0; }
+}
+@keyframes meme-eject {
+  0%   { transform: translateX(0);    opacity: 1; }
+  70%  { transform: translateX(45vw); opacity: 1; }
+  100% { transform: translateX(65vw); opacity: 0; }
+}
+@keyframes meme-vent {
+  0%   { transform: translateY(0)    scale(1);   opacity: 1; }
+  50%  { transform: translateY(30px) scale(0.8); opacity: 0.5; }
+  100% { transform: translateY(65px) scale(0);   opacity: 0; }
+}
+@keyframes meme-violin-sway {
+  from { transform: rotate(-8deg); }
+  to   { transform: rotate(8deg); }
+}
+
+@keyframes aim-pulse {
+  from { transform: scale(1);    box-shadow: 0 0 8px  rgba(255,34,0,0.5); }
+  to   { transform: scale(1.12); box-shadow: 0 0 18px rgba(255,34,0,0.85); }
+}
+
+.aim-h { position:absolute; top:50%; left:0; right:0; height:2px; background:#ff2200; transform:translateY(-50%); pointer-events:none; }
+.aim-v { position:absolute; left:50%; top:0; bottom:0; width:2px; background:#ff2200; transform:translateX(-50%); pointer-events:none; }
+.aim-dot { width:7px; height:7px; background:#ff2200; border-radius:50%; pointer-events:none; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   /* 3-col → single column stack */
