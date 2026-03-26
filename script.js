@@ -486,6 +486,24 @@ function showSection(name) {
     e.preventDefault();
     togglePanel();
   });
+
+  // ── mobile: 9 taps on nav-name opens panel ──
+  (function () {
+    const TARGET = 9, WINDOW = 3000;
+    let taps = 0, timer = null;
+    function resetTaps() { taps = 0; }
+    document.addEventListener('touchstart', e => {
+      const navName = e.target.closest('.nav-name');
+      if (!navName) return;
+      taps++;
+      clearTimeout(timer);
+      timer = setTimeout(resetTaps, WINDOW);
+      if (taps >= TARGET) {
+        taps = 0; clearTimeout(timer);
+        togglePanel();
+      }
+    }, { passive: true });
+  })();
 })();
 
 // terminal block cursor
