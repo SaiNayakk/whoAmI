@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sai — saishravan nitish nayak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="statusbar">
+    <span class="status-dot"></span>
+    <span>online &nbsp;·&nbsp; bengaluru, india &nbsp;·&nbsp; v2.2.0</span>
+  </div>
+
+  <nav>
+    <span class="nav-name" onclick="showSection('index')">sai.</span>
+    <div class="nav-links">
+      <a href="#" class="nav-link active" data-section="index" onclick="showSection('index')">~/</a>
+      <a href="#" class="nav-link" data-section="changelog" onclick="showSection('changelog')">changelog</a>
+      <a href="#" class="nav-link" data-section="modules" onclick="showSection('modules')">modules</a>
+      <a href="#" class="nav-link" data-section="log" onclick="showSection('log')">log</a>
+      <a href="#" class="nav-link" data-section="guestbook" onclick="showSection('guestbook')">guestbook.txt</a>
+    </div>
+  </nav>
+
+  <!-- INDEX -->
+  <section id="index" class="section active">
+    <div class="container">
+      <div class="hero">
+        <p class="hero-name">saishravan nitish nayak</p>
+        <div class="hero-divider"></div>
+        <h1 class="hero-tagline">I automate the boring stuff,<br>build what's missing,<br>and occasionally use an old Android phone as a server.</h1>
+        <div class="hero-divider"></div>
+        <div class="currently-block">
+          <span class="currently-label">currently —</span>
+          <div class="currently-lines">
+            <div class="currently-line">
+              <span class="cl-key">writing code</span>
+              <span class="cl-sep">@</span>
+              <span class="cl-val">Fidelity Investments</span>
+            </div>
+            <div class="currently-line">
+              <span class="cl-key">self-hosting apps</span>
+              <span class="cl-sep">on</span>
+              <span class="cl-val">a ₹0 server (old Android phone)</span>
+            </div>
+            <div class="currently-line">
+              <span class="cl-key">always</span>
+              <span class="cl-sep">:</span>
+              <span class="cl-val">automating · building · thinking in systems</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-links">
+          <a href="https://github.com/SaiNayakk" target="_blank">github ↗</a>
+          <span>·</span>
+          <a href="https://www.linkedin.com/in/saishravannayak" target="_blank">linkedin ↗</a>
+          <span>·</span>
+          <a href="mailto:sai31nayak@gmail.com">sai31nayak@gmail.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHANGELOG -->
+  <section id="changelog" class="section">
+    <div class="container">
+      <div class="section-label">// changelog</div>
+      <p class="section-sub">a human, versioned.</p>
+
+      <div class="cl-entries">
+
+        <div class="cl-entry">
+          <div class="cl-entry-header">
+            <span class="version">v2.2.0</span>
+            <span class="cl-date">Aug 2025 — present</span>
+          </div>
+          <p class="cl-role">Software Engineer &nbsp;·&nbsp; Fidelity Investments</p>
+          <p class="cl-note">Full-stack. Modernising legacy Mainframe brokerage systems into microservices. The kind of engineer who'd rather spend an afternoon writing a script than do something manually twice. Also on the LEAP squad, mentoring interns — which feels odd because I was one recently.</p>
+          <div class="cl-stack">
+            <span>Java</span><span>Spring Boot</span><span>Angular</span><span>Docker</span><span>Kubernetes</span><span>Terraform</span><span>AWS</span><span>Datadog</span>
+          </div>
+        </div>
+
+        <div class="cl-entry">
+          <div class="cl-entry-header">
+            <span class="version">v2.1.0</span>
+            <span class="cl-date">Jul 2024 — Aug 2025</span>
+          </div>
+          <p class="cl-role">Executive Graduate Trainee &nbsp;·&nbsp; Fidelity Investments</p>
+          <p class="cl-note">First role out of college, same company. Engineered retry logic with exponential backoff for micro-deposits and contributed to infrastructure lifecycle management. Essentially: fixing things that looked fine on paper but quietly weren't.</p>
+        </div>
+
+        <div class="cl-entry">
+          <div class="cl-entry-header">
+            <span class="version">v1.5.0</span>
+            <span class="cl-date">2 + 5 months during college</span>
+          </div>
+          <p class="cl-role">Full Stack Engineering Intern &nbsp;·&nbsp; Fidelity Investments</p>
+          <p class="cl-note">Two stints, seven months total. Built a Python automation tool that cut onboarding time for new joiners. Got comfortable with the stack, understood the culture, got an offer. Stayed.</p>
+        </div>
+
+        <div class="cl-entry">
+          <div class="cl-entry-header">
+            <span class="version">v1.0.0</span>
+            <span class="cl-date">2020 — 2024</span>
+          </div>
+          <p class="cl-role">B.Tech Information Science &nbsp;·&nbsp; UVCE, Bengaluru</p>
+          <p class="cl-note">Four years of learning the theory behind things I was already building. Graduated with a CGPA of 8.94. Time to ship real things in the real world.</p>
+        </div>
+
+        <div class="cl-entry">
+          <div class="cl-entry-header">
+            <span class="version">v0.1.0</span>
+            <span class="cl-date">origin</span>
+          </div>
+          <p class="cl-role">Human &nbsp;·&nbsp; Silvassa, India</p>
+          <p class="cl-note">Born in Silvassa. Now split between Bengaluru and home. Still running the same core, just with more dependencies installed.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MODULES -->
+  <section id="modules" class="section">
+    <div class="container modules-container">
+      <div class="section-label">// modules</div>
+      <p class="section-sub">things I've shipped.</p>
+
+      <div class="modules-grid">
+
+        <div class="module-card">
+          <div class="module-header">
+            <div>
+              <span class="module-name">homeloan-calc</span>
+              <span class="module-status status-live">● live</span>
+            </div>
+            <a href="https://loancalc-saiworks.nncs.in/" target="_blank" class="module-link">↗</a>
+          </div>
+          <p class="module-desc">
+            Built because existing loan calculators were either too basic or required an Excel sheet I didn't want to maintain. Has prepayment analysis, amortization schedules, Indian tax benefits (80C & 24B), rent-vs-buy comparisons, and shareable links.
+          </p>
+          <p class="module-infra">infra: <span>old Android phone, running 24/7</span></p>
+          <div class="module-tags">
+            <span>self-hosted</span>
+            <span>finance</span>
+            <span>india-specific</span>
+          </div>
+        </div>
+
+        <div class="module-card module-wip">
+          <div class="module-header">
+            <div>
+              <span class="module-name">next-module</span>
+              <span class="module-status status-wip">○ in progress</span>
+            </div>
+          </div>
+          <p class="module-desc">always building something. check back.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- LOG (merged with highlights) -->
+  <section id="log" class="section">
+    <div class="container">
+      <div class="section-label">// log</div>
+      <p class="section-sub">writing, moments, things worth noting.</p>
+
+      <!-- PINNED -->
+      <div class="log-pinned-label">◆ pinned</div>
+      <div class="feed-entries">
+
+        <div class="feed-card feed-pinned">
+          <div class="feed-header">
+            <div class="feed-left">
+              <span class="feed-type">moment</span>
+              <span class="feed-date">Jan 2025</span>
+            </div>
+            <a href="https://www.linkedin.com/posts/saishravannayak_fidelityassociate-fidelity-activity-7436599144154234881-Z7qJ" target="_blank" class="hl-link">↗ linkedin</a>
+          </div>
+          <p class="feed-title">FMR India Excellence Award — Culture & Community Champion</p>
+          <p class="feed-desc">Received the FMR India Excellence Award as Culture and Community Champion with the LEAP Alumni Core Team at Fidelity. Recognition for work done through the LEAP Learning and Development team — helping build the kind of environment I'd have wanted when I was starting out.</p>
+          <div class="hl-tags"><span>fidelity</span><span>leap</span><span>recognition</span></div>
+        </div>
+
+        <div class="feed-card feed-pinned">
+          <div class="feed-header">
+            <div class="feed-left">
+              <span class="feed-type">moment</span>
+              <span class="feed-date">Sep 2025</span>
+            </div>
+            <a href="https://www.linkedin.com/posts/saishravannayak_fidelityinvestmentsindia-careervitality-careergrowth-activity-7376429667945394176-wboi" target="_blank" class="hl-link">↗ linkedin</a>
+          </div>
+          <p class="feed-title">MultiGen ABRG Panel Discussion</p>
+          <p class="feed-desc">Spoke on a panel at the launch of Fidelity India's Multigenerational Associate Business Resource Group. Topics: innovation across generations, reverse mentorship, unlearning and relearning. Interesting to be the youngest voice on a panel and realise that works both ways — I learned as much as I shared.</p>
+          <div class="hl-tags"><span>panel</span><span>abrg</span><span>fidelity</span></div>
+        </div>
+
+      </div>
+
+      <!-- REST — newest first -->
+      <div class="log-pinned-label" style="margin-top:2rem;">recent</div>
+      <div class="feed-entries">
+
+<a href="https://medium.com/@sai31nayak/home-loans-in-india-are-confusing-so-i-built-a-calculator-cc88e1b5dbd1" target="_blank" rel="noopener" class="feed-card feed-link">
+          <div class="feed-header">
+            <div class="feed-left">
+              <span class="feed-type">post</span>
+              <span class="feed-date">2026-04</span>
+            </div>
+            <span class="hl-link">↗ read</span>
+          </div>
+          <p class="feed-title">Home Loans in India Are Confusing — So I Built a Calculator</p>
+          <p class="feed-desc">Most tools give you an EMI number and call it a day. That's not enough to make a ₹50 lakh decision.</p>
+        </a>
+
+        <div class="feed-card">
+          <div class="feed-header">
+            <div class="feed-left">
+              <span class="feed-type">moment</span>
+              <span class="feed-date">Feb 2026</span>
+            </div>
+            <a href="https://www.linkedin.com/posts/lisireddy_tuckandtieday2026-leap-growthjourney-activity-7433704868210499585-pLD_" target="_blank" class="hl-link">↗ linkedin</a>
+          </div>
+          <p class="feed-title">LEAP Tuck & Tie Day 2026</p>
+          <p class="feed-desc">Part of the team behind Tuck & Tie Day. From interns who didn't know how to tie a tie to professionals walking in suited and confident. The kind of event that's more work than it looks and more rewarding than you expect.</p>
+          <div class="hl-tags"><span>leap</span><span>fidelity</span><span>mentorship</span></div>
+        </div>
+
+        <div class="feed-card">
+          <div class="feed-header">
+            <div class="feed-left">
+              <span class="feed-type">moment</span>
+              <span class="feed-date">Feb 2026</span>
+            </div>
+            <a href="https://www.linkedin.com/posts/rahulraj75_leadership-mentorship-internshipjourney-ugcPost-7431231455713828864-wIx7" target="_blank" class="hl-link">↗ linkedin</a>
+          </div>
+          <p class="feed-title">Networking & Engagement Session for New Interns</p>
+          <p class="feed-desc">Was part of an interactive session for Fidelity's new intern cohort. The full-circle moment of being on the other side of a session I once sat in on as a nervous intern.</p>
+          <div class="hl-tags"><span>mentorship</span><span>internship</span><span>fidelity</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- GUESTBOOK -->
+  <section id="guestbook" class="section">
+    <div class="container gb-container">
+      <div class="section-label">// guestbook.txt</div>
+      <p class="section-sub">beat the top 10 to leave a mark.</p>
+
+      <div class="gb-layout">
+
+        <div class="gb-game-wrap">
+          <div class="snake-meta">
+            <span>score: <span class="snake-score-val" id="gb-score-display">0</span></span>
+            <span>hi: <span class="snake-score-val" id="gb-hi-display">0</span></span>
+            <span id="gb-level-display" style="color:var(--muted)">speed: 1</span>
+          </div>
+          <div class="snake-canvas-wrap">
+            <canvas id="gb-canvas" width="320" height="320"></canvas>
+            <div class="snake-overlay" id="gb-overlay-start">
+              <p class="overlay-title">&gt;_ play to sign</p>
+              <p class="overlay-sub">get a top 10 score<br>to leave your mark</p>
+              <button class="overlay-btn" onclick="gbStartGame()">→ start</button>
+            </div>
+            <div class="snake-overlay" id="gb-overlay-gameover" style="display:none;">
+              <p class="overlay-title" id="gb-result-title">game over</p>
+              <p class="overlay-score" id="gb-final-score">0</p>
+              <div class="name-entry" id="gb-sign-form" style="display:none;">
+                <p class="overlay-sub">top 10. you earned it.<br>leave your mark.</p>
+                <input class="overlay-input" id="gb-player-name" type="text" maxlength="16" placeholder="your name" autocomplete="off" />
+                <textarea class="overlay-input gb-msg-input" id="gb-message" maxlength="200" placeholder="say something." rows="2"></textarea>
+                <button class="overlay-btn" onclick="gbSubmit()">→ sign</button>
+              </div>
+              <div id="gb-locked-msg" style="display:none;">
+                <p class="overlay-sub">not top 10 this time.<br>try again.</p>
+              </div>
+              <button class="overlay-btn-ghost" onclick="gbStartGame()">play again</button>
+            </div>
+          </div>
+          <p class="snake-controls">arrows / wasd &nbsp;·&nbsp; swipe</p>
+        </div>
+
+        <div class="gb-side">
+          <div class="log-pinned-label">◆ signed</div>
+          <div class="guestbook-entries" id="guestbook-entries">
+            <p class="lb-empty" style="padding:1rem 0;">no signatures yet. be first.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>saishravan nitish nayak</span>
+    <span class="footer-sep">·</span>
+    <span>bengaluru / silvassa</span>
+    <span class="footer-sep">·</span>
+    <a href="mailto:sai31nayak@gmail.com">sai31nayak@gmail.com</a>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <!-- Firebase (only loads when modules section has the canvas) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA2QkOKY80mjZfNU7L5woGbKT_vt7Bsbss",
+      authDomain: "snake-leaderboard101.firebaseapp.com",
+      databaseURL: "https://snake-leaderboard101-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "snake-leaderboard101",
+      storageBucket: "snake-leaderboard101.firebasestorage.app",
+      messagingSenderId: "994824269597",
+      appId: "1:994824269597:web:0591bfcaa0d9f31344bbf4",
+      measurementId: "G-M39VD22JSR"
+    };
+    let db = null;
+    let lbScores = []; // track current leaderboard scores
+
+    try {
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.database();
+      listenLeaderboard();
+    } catch(e) { /* firebase offline */ }
+
+    function listenLeaderboard() {
+      if (!db) return;
+      db.ref('snake_leaderboard').on('value', snap => {
+        const raw = snap.val();
+        const all = raw ? Object.values(raw) : [];
+        all.sort((a, b) => (b.score || 0) - (a.score || 0));
+        const entries = all.slice(0, 10);
+        lbScores = entries.map(e => e.score);
+
+        const container = document.getElementById('guestbook-entries');
+        if (!container) return;
+        if (!entries.length) {
+          container.innerHTML = '<p class="lb-empty" style="padding:1rem 0;">no signatures yet. be first.</p>';
+          return;
+        }
+        container.innerHTML = entries.map((e, i) => `
+          <div class="guest-entry">
+            <div class="guest-meta">
+              <span class="guest-rank">#${i + 1}</span>
+              <span class="guest-name">${esc(e.name)}</span>
+              <span class="guest-sep">—</span>
+              <span class="guest-score">${e.score}</span>
+              <span class="guest-sep">—</span>
+              <span class="guest-date">${esc(e.date||'')}</span>
+            </div>
+            ${e.message ? `<p>${esc(e.message)}</p>` : ''}
+          </div>`).join('');
+      });
+    }
+
+    function qualifiesForLb(score) {
+      if (score <= 0) return false;
+      if (lbScores.length < 10) return true;
+      return score > lbScores[lbScores.length - 1];
+    }
+
+    function esc(s) {
+      const d = document.createElement('div');
+      d.appendChild(document.createTextNode(String(s)));
+      return d.innerHTML;
+    }
+
+    const COLS = 20, ROWS = 20;
+    document.addEventListener('keydown', e => {
+      const map = {ArrowUp:{x:0,y:-1},w:{x:0,y:-1},W:{x:0,y:-1},ArrowDown:{x:0,y:1},s:{x:0,y:1},S:{x:0,y:1},ArrowLeft:{x:-1,y:0},a:{x:-1,y:0},A:{x:-1,y:0},ArrowRight:{x:1,y:0},d:{x:1,y:0},D:{x:1,y:0}};
+      const nd = map[e.key];
+      if (gbAlive && nd && !(nd.x===-gbDir.x && nd.y===-gbDir.y)) {
+        gbNextDir = nd;
+        if(e.key.startsWith('Arrow')) e.preventDefault();
+      }
+    });
+
+    document.getElementById('gb-player-name').addEventListener('keydown', e=>{if(e.key==='Enter')document.getElementById('gb-message').focus();});
+
+    /* ── GUESTBOOK SNAKE ── */
+    const gbCanvas = document.getElementById('gb-canvas');
+    const gbCtx    = gbCanvas.getContext('2d');
+
+    function gbSyncCanvas() {
+      const size = gbCanvas.offsetWidth;
+      gbCanvas.width = size; gbCanvas.height = size;
+    }
+    const gbRO = new ResizeObserver(() => {
+      if (gbCanvas.offsetWidth > 0) { gbSyncCanvas(); if (!gbAlive) gbDrawIdle(); }
+    });
+    gbRO.observe(gbCanvas);
+
+    function GBGRID() { return gbCanvas.width / COLS; }
+
+    let gbSnake, gbDir = {x:1,y:0}, gbNextDir = {x:1,y:0}, gbFood, gbScore, gbLoop, gbSpeed, gbAlive = false;
+    let gbSessionHi = 0;
+
+    function gbStartGame() {
+      document.getElementById('gb-overlay-start').style.display    = 'none';
+      document.getElementById('gb-overlay-gameover').style.display = 'none';
+      document.getElementById('gb-sign-form').style.display        = 'none';
+      document.getElementById('gb-locked-msg').style.display       = 'none';
+      document.getElementById('gb-player-name').value              = '';
+      document.getElementById('gb-message').value                  = '';
+      gbSyncCanvas();
+      gbSnake = [{x:10,y:10},{x:9,y:10},{x:8,y:10}];
+      gbDir = gbNextDir = {x:1,y:0};
+      gbScore = 0; gbSpeed = 150; gbAlive = true;
+      gbPlaceFood(); gbUpdateHUD();
+      clearInterval(gbLoop);
+      gbLoop = setInterval(gbTick, gbSpeed);
+    }
+
+    function gbPlaceFood() {
+      let p;
+      do { p = {x: Math.floor(Math.random()*COLS), y: Math.floor(Math.random()*ROWS)}; }
+      while (gbSnake.some(s => s.x===p.x && s.y===p.y));
+      gbFood = p;
+    }
+
+    function gbTick() {
+      if (!gbAlive) return;
+      gbDir = {...gbNextDir};
+      const h = {x: gbSnake[0].x + gbDir.x, y: gbSnake[0].y + gbDir.y};
+      if (h.x<0||h.x>=COLS||h.y<0||h.y>=ROWS||gbSnake.some(s=>s.x===h.x&&s.y===h.y)) { gbEndGame(); return; }
+      gbSnake.unshift(h);
+      if (h.x===gbFood.x && h.y===gbFood.y) {
+        gbScore += 10;
+        if (gbScore > gbSessionHi) gbSessionHi = gbScore;
+        gbPlaceFood(); gbBumpSpeed(); gbUpdateHUD();
+      } else { gbSnake.pop(); }
+      gbDraw();
+    }
+
+    function gbBumpSpeed() {
+      const lv = Math.floor(gbScore/50)+1;
+      const ns = Math.max(60, 150-(lv-1)*15);
+      if (ns !== gbSpeed) { gbSpeed=ns; clearInterval(gbLoop); gbLoop=setInterval(gbTick,gbSpeed); }
+      document.getElementById('gb-level-display').textContent = `speed: ${lv}`;
+    }
+
+    function gbUpdateHUD() {
+      document.getElementById('gb-score-display').textContent = gbScore;
+      document.getElementById('gb-hi-display').textContent    = gbSessionHi;
+    }
+
+    function gbEndGame() {
+      gbAlive = false; clearInterval(gbLoop); gbDraw();
+      document.getElementById('gb-final-score').textContent        = gbScore;
+      document.getElementById('gb-overlay-gameover').style.display = 'flex';
+      if (qualifiesForLb(gbScore)) {
+        document.getElementById('gb-result-title').textContent = 'you made it.';
+        document.getElementById('gb-sign-form').style.display  = 'flex';
+        setTimeout(() => document.getElementById('gb-player-name').focus(), 100);
+      } else {
+        document.getElementById('gb-result-title').textContent    = 'game over';
+        document.getElementById('gb-locked-msg').style.display    = 'block';
+      }
+    }
+
+    function gbDrawIdle() {
+      const g = GBGRID();
+      gbCtx.fillStyle='#111009'; gbCtx.fillRect(0,0,gbCanvas.width,gbCanvas.height);
+      gbCtx.strokeStyle='#181610'; gbCtx.lineWidth=0.5;
+      for(let x=0;x<=COLS;x++){gbCtx.beginPath();gbCtx.moveTo(x*g,0);gbCtx.lineTo(x*g,gbCanvas.height);gbCtx.stroke();}
+      for(let y=0;y<=ROWS;y++){gbCtx.beginPath();gbCtx.moveTo(0,y*g);gbCtx.lineTo(gbCanvas.width,y*g);gbCtx.stroke();}
+    }
+
+    function gbDraw() {
+      const g = GBGRID();
+      gbCtx.fillStyle='#111009'; gbCtx.fillRect(0,0,gbCanvas.width,gbCanvas.height);
+      gbCtx.strokeStyle='#181610'; gbCtx.lineWidth=0.5;
+      for(let x=0;x<=COLS;x++){gbCtx.beginPath();gbCtx.moveTo(x*g,0);gbCtx.lineTo(x*g,gbCanvas.height);gbCtx.stroke();}
+      for(let y=0;y<=ROWS;y++){gbCtx.beginPath();gbCtx.moveTo(0,y*g);gbCtx.lineTo(gbCanvas.width,y*g);gbCtx.stroke();}
+      if (!gbFood || !gbSnake) return;
+      const p = 0.5+0.5*Math.sin(Date.now()/200);
+      const e2 = Math.round(g*0.2), food_s = Math.round(g*0.6);
+      gbCtx.fillStyle = p>0.5?'#d4894a':'#c47b3a';
+      gbCtx.fillRect(gbFood.x*g+e2, gbFood.y*g+e2, food_s, food_s);
+      for(let i=gbSnake.length-1;i>=1;i--){
+        const t=1-i/gbSnake.length;
+        gbCtx.fillStyle=`rgba(78,154,106,${0.3+t*0.7})`;
+        gbCtx.fillRect(gbSnake[i].x*g+1,gbSnake[i].y*g+1,g-2,g-2);
+      }
+      gbCtx.fillStyle='#ede8dc';
+      gbCtx.fillRect(gbSnake[0].x*g+1,gbSnake[0].y*g+1,g-2,g-2);
+      const eo=Math.round(g*0.25),ei=Math.round(g*0.65),es=3;
+      gbCtx.fillStyle='#111009';
+      if(gbDir.x===1) {gbCtx.fillRect(gbSnake[0].x*g+ei,gbSnake[0].y*g+eo,es,es);gbCtx.fillRect(gbSnake[0].x*g+ei,gbSnake[0].y*g+ei,es,es);}
+      if(gbDir.x===-1){gbCtx.fillRect(gbSnake[0].x*g+eo,gbSnake[0].y*g+eo,es,es);gbCtx.fillRect(gbSnake[0].x*g+eo,gbSnake[0].y*g+ei,es,es);}
+      if(gbDir.y===-1){gbCtx.fillRect(gbSnake[0].x*g+eo,gbSnake[0].y*g+eo,es,es);gbCtx.fillRect(gbSnake[0].x*g+ei,gbSnake[0].y*g+eo,es,es);}
+      if(gbDir.y===1) {gbCtx.fillRect(gbSnake[0].x*g+eo,gbSnake[0].y*g+ei,es,es);gbCtx.fillRect(gbSnake[0].x*g+ei,gbSnake[0].y*g+ei,es,es);}
+    }
+
+    let gbTs = null;
+    gbCanvas.addEventListener('touchstart', e=>{gbTs={x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:true});
+    gbCanvas.addEventListener('touchend', e=>{
+      if(!gbTs) return;
+      const dx=e.changedTouches[0].clientX-gbTs.x, dy=e.changedTouches[0].clientY-gbTs.y;
+      if(Math.abs(dx)>Math.abs(dy)){const d=dx>0?{x:1,y:0}:{x:-1,y:0};if(d.x!==-gbDir.x)gbNextDir=d;}
+      else{const d=dy>0?{x:0,y:1}:{x:0,y:-1};if(d.y!==-gbDir.y)gbNextDir=d;}
+      gbTs=null;
+    },{passive:true});
+
+    async function gbSubmit() {
+      const name = document.getElementById('gb-player-name').value.trim() || 'anonymous';
+      const msg  = document.getElementById('gb-message').value.trim();
+      document.getElementById('gb-sign-form').style.display  = 'none';
+      document.getElementById('gb-result-title').textContent = 'signed. ✓';
+      if (db && gbScore > 0) {
+        const date = new Date().toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'});
+        const entry = { name, score: gbScore, date };
+        if (msg) entry.message = msg;
+        await db.ref('snake_leaderboard').push(entry).catch(() => {});
+      }
+    }
+  </script>
+</body>
+</html>
