@@ -506,7 +506,7 @@ function showSection(name) {
   })();
 })();
 
-// ── SYS.STATUS ──
+// ── MODULES (live status) ──
 const STATUS_MODULES = [
   {
     id: 'homeloan-calc',
@@ -539,7 +539,6 @@ function statusPushHistory(id, up) {
   h.push(up ? 1 : 0);
   if (h.length > STATUS_HISTORY_SIZE) h = h.slice(-STATUS_HISTORY_SIZE);
   localStorage.setItem('status_h_' + id, JSON.stringify(h));
-  return h;
 }
 
 async function statusPingModule(mod) {
@@ -557,7 +556,7 @@ async function statusPingModule(mod) {
 }
 
 function statusRender(states) {
-  const grid = document.getElementById('status-grid');
+  const grid = document.getElementById('modules-grid');
   if (!grid) return;
 
   grid.innerHTML = STATUS_MODULES.map(mod => {
@@ -571,7 +570,6 @@ function statusRender(states) {
     const label    = s.status === 'up' ? 'online' : s.status === 'down' ? 'offline' : 'checking…';
     const latency  = s.ms != null ? `${s.ms}ms` : '—';
 
-    // 30-slot bar, older slots on left, empty if no data yet
     const segs = Array.from({ length: STATUS_HISTORY_SIZE }, (_, i) => {
       const idx = history.length - STATUS_HISTORY_SIZE + i;
       if (idx < 0) return '<span class="status-uptime-seg"></span>';
@@ -631,19 +629,19 @@ async function runStatusChecks() {
   if (btn) btn.disabled = false;
 }
 
-// trigger checks: override showSection so status tab always kicks off a check
+// trigger checks when modules section opens
 const _origShowSection = window.showSection || showSection;
 window.showSection = function (name) {
   _origShowSection(name);
-  if (name === 'status') {
+  if (name === 'modules') {
     if (!_sCheckedOnce) { _sCheckedOnce = true; }
     runStatusChecks();
   }
 };
 
-// re-check every 60s while active
+// re-check every 60s while modules section is active
 setInterval(() => {
-  const sec = document.getElementById('status');
+  const sec = document.getElementById('modules');
   if (sec && sec.classList.contains('active')) runStatusChecks();
 }, 60000);
 

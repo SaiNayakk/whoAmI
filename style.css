@@ -482,8 +482,10 @@ nav {
   letter-spacing: 0.04em;
 }
 
-.status-live { color: var(--live); }
-.status-wip  { color: var(--wip); }
+.status-live     { color: var(--live); }
+.status-wip      { color: var(--wip); }
+.status-checking { color: var(--muted); animation: pulse 1.5s ease-in-out infinite; }
+.status-down     { color: #e05555; }
 
 .module-link {
   color: var(--muted);
