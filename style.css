@@ -964,6 +964,162 @@ footer a:hover { color: var(--text); }
 .aim-v { position:absolute; left:50%; top:0; bottom:0; width:2px; background:#ff2200; transform:translateX(-50%); pointer-events:none; }
 .aim-dot { width:7px; height:7px; background:#ff2200; border-radius:50%; pointer-events:none; }
 
+/* ── SYS.STATUS ── */
+.status-grid {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.status-card-placeholder {
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.status-checking-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-style: italic;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.status-card {
+  padding: 1.75rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.status-card:first-child { padding-top: 0; }
+
+.status-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.status-name-group { flex: 1; min-width: 0; }
+
+.status-name {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.status-url {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+}
+
+.status-url a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.status-url a:hover { color: var(--accent); }
+
+.status-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+  flex-shrink: 0;
+}
+
+.status-indicator {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.status-dot-live    { color: var(--live); }
+.status-dot-down    { color: #e05555; }
+.status-dot-checking { color: var(--muted); animation: pulse 1.5s ease-in-out infinite; }
+
+.status-latency {
+  font-size: 0.68rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.status-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0.7rem 0;
+}
+
+.status-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  margin-bottom: 0.85rem;
+}
+
+.status-meta-line {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.status-meta-line span {
+  color: var(--text);
+  font-style: italic;
+}
+
+.status-uptime-bar {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 0.35rem;
+}
+
+.status-uptime-seg {
+  height: 14px;
+  flex: 1;
+  background: var(--border);
+  border-radius: 1px;
+}
+
+.status-uptime-seg.up   { background: var(--live); opacity: 0.8; }
+.status-uptime-seg.down { background: #e05555; opacity: 0.8; }
+
+.status-uptime-label {
+  font-size: 0.65rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.status-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-last-time {
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.status-refresh-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  padding: 0.3rem 0.75rem;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.status-refresh-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.status-refresh-btn:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   /* 3-col → single column stack */

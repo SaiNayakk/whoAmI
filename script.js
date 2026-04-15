@@ -506,6 +506,147 @@ function showSection(name) {
   })();
 })();
 
+// ── SYS.STATUS ──
+const STATUS_MODULES = [
+  {
+    id: 'homeloan-calc',
+    name: 'homeloan-calc',
+    url: 'https://loancalc-saiworks.nncs.in/',
+    displayUrl: 'loancalc-saiworks.nncs.in',
+    stack: 'React · Vite · MUI · Recharts',
+    infra: 'self-hosted · old Android phone',
+    desc: 'EMI calculator with prepayment analysis, tax benefits, amortization, shareable links.',
+  },
+  {
+    id: 'eventsnap',
+    name: 'eventsnap',
+    url: 'https://eventsnap-saiworks.nncs.in/',
+    displayUrl: 'eventsnap-saiworks.nncs.in',
+    stack: 'Next.js · Supabase · AWS Rekognition · Cloudflare R2',
+    infra: 'GCP VM · Cloudflare · Supabase cloud',
+    desc: 'Face-recognition photo delivery platform for Indian wedding photographers.',
+  },
+];
+
+const STATUS_HISTORY_SIZE = 30;
+
+function statusGetHistory(id) {
+  try { return JSON.parse(localStorage.getItem('status_h_' + id) || '[]'); } catch { return []; }
+}
+
+function statusPushHistory(id, up) {
+  let h = statusGetHistory(id);
+  h.push(up ? 1 : 0);
+  if (h.length > STATUS_HISTORY_SIZE) h = h.slice(-STATUS_HISTORY_SIZE);
+  localStorage.setItem('status_h_' + id, JSON.stringify(h));
+  return h;
+}
+
+async function statusPingModule(mod) {
+  const start = performance.now();
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 8000);
+  try {
+    await fetch(mod.url, { mode: 'no-cors', cache: 'no-cache', signal: ctrl.signal });
+    clearTimeout(t);
+    return { up: true, ms: Math.round(performance.now() - start) };
+  } catch {
+    clearTimeout(t);
+    return { up: false, ms: null };
+  }
+}
+
+function statusRender(states) {
+  const grid = document.getElementById('status-grid');
+  if (!grid) return;
+
+  grid.innerHTML = STATUS_MODULES.map(mod => {
+    const s = states[mod.id] || { status: 'checking', ms: null };
+    const history = statusGetHistory(mod.id);
+
+    const dotClass = s.status === 'up' ? 'status-dot-live'
+                   : s.status === 'down' ? 'status-dot-down'
+                   : 'status-dot-checking';
+    const dotChar  = s.status === 'up' ? '●' : s.status === 'down' ? '●' : '○';
+    const label    = s.status === 'up' ? 'online' : s.status === 'down' ? 'offline' : 'checking…';
+    const latency  = s.ms != null ? `${s.ms}ms` : '—';
+
+    // 30-slot bar, older slots on left, empty if no data yet
+    const segs = Array.from({ length: STATUS_HISTORY_SIZE }, (_, i) => {
+      const idx = history.length - STATUS_HISTORY_SIZE + i;
+      if (idx < 0) return '<span class="status-uptime-seg"></span>';
+      return `<span class="status-uptime-seg ${history[idx] ? 'up' : 'down'}"></span>`;
+    }).join('');
+
+    const checks = history.length;
+    const pct    = checks ? Math.round((history.filter(x => x).length / checks) * 100) : null;
+    const uptimeTxt = pct != null
+      ? `${pct}% uptime · last ${checks} check${checks > 1 ? 's' : ''}`
+      : 'no history yet';
+
+    return `
+      <div class="status-card">
+        <div class="status-card-header">
+          <div class="status-name-group">
+            <div class="status-name">${mod.name}</div>
+            <div class="status-url"><a href="${mod.url}" target="_blank">${mod.displayUrl} ↗</a></div>
+          </div>
+          <div class="status-badge">
+            <span class="status-indicator ${dotClass}">${dotChar} ${label}</span>
+            <span class="status-latency">${latency}</span>
+          </div>
+        </div>
+        <div class="status-divider"></div>
+        <div class="status-meta">
+          <div class="status-meta-line">stack: <span>${mod.stack}</span></div>
+          <div class="status-meta-line">infra: <span>${mod.infra}</span></div>
+          <div class="status-meta-line">desc: <span>${mod.desc}</span></div>
+        </div>
+        <div class="status-uptime-bar" title="check history — oldest to newest">${segs}</div>
+        <div class="status-uptime-label">${uptimeTxt}</div>
+      </div>`;
+  }).join('');
+}
+
+const _sState = {};
+let _sCheckedOnce = false;
+
+async function runStatusChecks() {
+  const btn = document.getElementById('status-refresh-btn');
+  if (btn) btn.disabled = true;
+
+  STATUS_MODULES.forEach(m => { _sState[m.id] = { status: 'checking', ms: null }; });
+  statusRender(_sState);
+
+  await Promise.all(STATUS_MODULES.map(async mod => {
+    const res = await statusPingModule(mod);
+    statusPushHistory(mod.id, res.up);
+    _sState[mod.id] = { status: res.up ? 'up' : 'down', ms: res.ms };
+    statusRender(_sState);
+  }));
+
+  const now = new Date();
+  const el = document.getElementById('status-last-time');
+  if (el) el.textContent = 'last checked: ' + now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+  if (btn) btn.disabled = false;
+}
+
+// trigger on first open; re-check every 60s while active
+(function () {
+  const sec = document.getElementById('status');
+  if (!sec) return;
+  new MutationObserver(() => {
+    if (sec.classList.contains('active') && !_sCheckedOnce) {
+      _sCheckedOnce = true;
+      runStatusChecks();
+    }
+  }).observe(sec, { attributes: true, attributeFilter: ['class'] });
+
+  setInterval(() => {
+    if (sec.classList.contains('active')) runStatusChecks();
+  }, 60000);
+})();
+
 // terminal block cursor
 (function () {
   const cur = document.createElement('div');

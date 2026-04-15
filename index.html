@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>sai — saishravan nitish nayak</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23111009'/%3E%3Crect x='2' y='4' width='8' height='8' fill='%23d4894a'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
@@ -21,6 +22,7 @@
       <a href="#" class="nav-link active" data-section="index" onclick="showSection('index')">~/</a>
       <a href="#" class="nav-link" data-section="changelog" onclick="showSection('changelog')">changelog</a>
       <a href="#" class="nav-link" data-section="modules" onclick="showSection('modules')">modules</a>
+      <a href="#" class="nav-link" data-section="status" onclick="showSection('status')">sys.status</a>
       <a href="#" class="nav-link" data-section="log" onclick="showSection('log')">log</a>
       <a href="#" class="nav-link" data-section="guestbook" onclick="showSection('guestbook')">guestbook.txt</a>
     </div>
@@ -182,6 +184,25 @@
           <p class="module-desc">always building something. check back.</p>
         </div>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- SYS.STATUS -->
+  <section id="status" class="section">
+    <div class="container">
+      <div class="section-label">// sys.status</div>
+      <p class="section-sub">live health of deployed modules.</p>
+
+      <div id="status-grid" class="status-grid">
+        <div class="status-card-placeholder">
+          <span class="status-checking-label">○ initialising checks…</span>
+        </div>
+      </div>
+
+      <div class="status-meta-row">
+        <span id="status-last-time" class="status-last-time">—</span>
+        <button class="status-refresh-btn" id="status-refresh-btn" onclick="runStatusChecks()">↺ refresh</button>
       </div>
     </div>
   </section>
