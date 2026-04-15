@@ -631,21 +631,21 @@ async function runStatusChecks() {
   if (btn) btn.disabled = false;
 }
 
-// trigger on first open; re-check every 60s while active
-(function () {
-  const sec = document.getElementById('status');
-  if (!sec) return;
-  new MutationObserver(() => {
-    if (sec.classList.contains('active') && !_sCheckedOnce) {
-      _sCheckedOnce = true;
-      runStatusChecks();
-    }
-  }).observe(sec, { attributes: true, attributeFilter: ['class'] });
+// trigger checks: override showSection so status tab always kicks off a check
+const _origShowSection = window.showSection || showSection;
+window.showSection = function (name) {
+  _origShowSection(name);
+  if (name === 'status') {
+    if (!_sCheckedOnce) { _sCheckedOnce = true; }
+    runStatusChecks();
+  }
+};
 
-  setInterval(() => {
-    if (sec.classList.contains('active')) runStatusChecks();
-  }, 60000);
-})();
+// re-check every 60s while active
+setInterval(() => {
+  const sec = document.getElementById('status');
+  if (sec && sec.classList.contains('active')) runStatusChecks();
+}, 60000);
 
 // terminal block cursor
 (function () {
