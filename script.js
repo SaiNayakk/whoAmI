@@ -544,7 +544,7 @@ function statusPushHistory(id, up) {
 async function statusPingModule(mod) {
   const start = performance.now();
   const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), 8000);
+  const t = setTimeout(() => ctrl.abort(), 5000);
   try {
     await fetch(mod.url, { mode: 'no-cors', cache: 'no-cache', signal: ctrl.signal });
     clearTimeout(t);
@@ -629,8 +629,12 @@ async function runStatusChecks() {
   if (btn) btn.disabled = false;
 }
 
-// auto-run 2s after page load (background — doesn't need modules open)
-window.addEventListener('load', () => setTimeout(runStatusChecks, 2000));
+// render checking state immediately so placeholder never shows
+STATUS_MODULES.forEach(m => { _sState[m.id] = { status: 'checking', ms: null }; });
+statusRender(_sState);
+
+// kick off actual pings as soon as DOM is ready
+document.addEventListener('DOMContentLoaded', runStatusChecks);
 
 // re-run on modules nav click
 document.querySelector('a[data-section="modules"]')
