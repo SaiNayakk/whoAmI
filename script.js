@@ -629,15 +629,12 @@ async function runStatusChecks() {
   if (btn) btn.disabled = false;
 }
 
-// trigger checks when modules section opens
-const _origShowSection = window.showSection || showSection;
-window.showSection = function (name) {
-  _origShowSection(name);
-  if (name === 'modules') {
-    if (!_sCheckedOnce) { _sCheckedOnce = true; }
-    runStatusChecks();
-  }
-};
+// auto-run 2s after page load (background — doesn't need modules open)
+window.addEventListener('load', () => setTimeout(runStatusChecks, 2000));
+
+// re-run on modules nav click
+document.querySelector('a[data-section="modules"]')
+  ?.addEventListener('click', () => setTimeout(runStatusChecks, 50));
 
 // re-check every 60s while modules section is active
 setInterval(() => {
