@@ -525,6 +525,7 @@ const STATUS_MODULES = [
     stack: 'Next.js · Supabase · AWS Rekognition · Cloudflare R2',
     infra: 'GCP VM · Cloudflare · Supabase cloud',
     desc: 'Face-recognition photo delivery platform for Indian wedding photographers.',
+    deployId: 'eventsnap',
   },
 ];
 
@@ -602,6 +603,7 @@ function statusRender(states) {
         </div>
         <div class="status-uptime-bar" title="check history — oldest to newest">${segs}</div>
         <div class="status-uptime-label">${uptimeTxt}</div>
+        ${mod.deployId ? `<div class="status-deploy-row"><button class="status-deploy-btn" onclick="deployProject('${mod.deployId}')">→ deploy</button></div>` : ''}
       </div>`;
   }).join('');
 }
@@ -645,6 +647,51 @@ setInterval(() => {
   const sec = document.getElementById('modules');
   if (sec && sec.classList.contains('active')) runStatusChecks();
 }, 60000);
+
+// ── DEPLOY ──
+async function deployProject(deployId) {
+  let key = sessionStorage.getItem('deploy_key');
+  if (!key) {
+    key = prompt('deploy key:');
+    if (!key) return;
+    sessionStorage.setItem('deploy_key', key);
+  }
+
+  const modal = document.getElementById('deploy-modal');
+  const output = document.getElementById('deploy-modal-output');
+  const title = document.getElementById('deploy-modal-title');
+  title.textContent = '$ deploy ' + deployId;
+  output.textContent = '';
+  modal.style.display = 'flex';
+
+  try {
+    const res = await fetch('https://deploy-saiworks.nncs.in/deploy/' + deployId, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + key },
+    });
+
+    if (res.status === 401) {
+      sessionStorage.removeItem('deploy_key');
+      output.textContent = '✕ wrong key. try again.';
+      return;
+    }
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      output.textContent += decoder.decode(value);
+      output.scrollTop = output.scrollHeight;
+    }
+  } catch (e) {
+    output.textContent += '\n✕ error: ' + e.message;
+  }
+}
+
+function closeDeployModal() {
+  document.getElementById('deploy-modal').style.display = 'none';
+}
 
 // terminal block cursor
 (function () {

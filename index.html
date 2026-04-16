@@ -302,6 +302,17 @@
     <a href="mailto:sai31nayak@gmail.com">sai31nayak@gmail.com</a>
   </footer>
 
+  <!-- Deploy terminal modal -->
+  <div id="deploy-modal" class="deploy-modal" style="display:none">
+    <div class="deploy-modal-inner">
+      <div class="deploy-modal-header">
+        <span id="deploy-modal-title">deploying…</span>
+        <button class="deploy-modal-close" onclick="closeDeployModal()">✕ close</button>
+      </div>
+      <pre id="deploy-modal-output" class="deploy-modal-output"></pre>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 
   <!-- Firebase (only loads when modules section has the canvas) -->
