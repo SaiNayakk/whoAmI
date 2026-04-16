@@ -372,11 +372,10 @@ function showSection(name) {
   inputLine.appendChild(promptEl); inputLine.appendChild(input);
   const hintEl = document.createElement('div'); hintEl.className = 'meme-hint';
   hintEl.textContent = '\` to close \xb7 type + enter to activate';
-  const deployBtn = document.createElement('button');
-  deployBtn.className = 'meme-deploy-btn';
-  deployBtn.textContent = '→ deploy eventsnap';
-  deployBtn.onclick = () => deployProject('eventsnap');
-  panel.appendChild(hdr); panel.appendChild(inputLine); panel.appendChild(hintEl); panel.appendChild(deployBtn);
+  const deployOptions = document.createElement('div');
+  deployOptions.className = 'meme-deploy-options';
+  deployOptions.style.display = 'none';
+  panel.appendChild(hdr); panel.appendChild(inputLine); panel.appendChild(hintEl); panel.appendChild(deployOptions);
   document.body.appendChild(panel);
 
   const indicator = document.createElement('div'); indicator.id = 'meme-indicator';
@@ -454,17 +453,34 @@ function showSection(name) {
     return false;
   }
 
+  const DEPLOY_PROJECTS = [
+    { id: 'eventsnap',  label: 'eventsnap' },
+    { id: 'deploybot',  label: 'deploybot'  },
+  ];
+
+  function showDeployOptions() {
+    deployOptions.innerHTML = '';
+    DEPLOY_PROJECTS.forEach(p => {
+      const btn = document.createElement('button');
+      btn.className = 'meme-deploy-btn';
+      btn.textContent = '→ ' + p.label;
+      btn.onclick = () => { deployOptions.style.display = 'none'; togglePanel(false); deployProject(p.id); };
+      deployOptions.appendChild(btn);
+    });
+    deployOptions.style.display = 'flex';
+  }
+
   input.addEventListener('keydown', e => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      if (input.value.trim() === '' || input.value.trim().toLowerCase() === 'stop') {
-        stopAll(); togglePanel(false); return;
-      }
+      const val = input.value.trim().toLowerCase();
+      if (val === '' || val === 'stop') { stopAll(); togglePanel(false); return; }
+      if (val === 'deploy') { input.value = ''; hintEl.textContent = 'pick a project:'; showDeployOptions(); return; }
       const matched = tryActivate(input.value);
       if (matched) togglePanel(false);
     }
-    if (e.key === 'Escape') { e.preventDefault(); togglePanel(false); }
-    if (e.key === '`') { e.preventDefault(); togglePanel(false); }
+    if (e.key === 'Escape') { e.preventDefault(); deployOptions.style.display = 'none'; togglePanel(false); }
+    if (e.key === '`') { e.preventDefault(); deployOptions.style.display = 'none'; togglePanel(false); }
   });
 
   let isOpen = false;
@@ -479,7 +495,7 @@ function showSection(name) {
   }
   function togglePanel(force) {
     const opening = force !== undefined ? force : !isOpen;
-    if (!opening) { isOpen = false; panel.classList.remove('meme-open'); return; }
+    if (!opening) { isOpen = false; panel.classList.remove('meme-open'); deployOptions.style.display = 'none'; return; }
     showDisclaimer(doOpen);
   }
 
