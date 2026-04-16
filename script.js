@@ -372,7 +372,11 @@ function showSection(name) {
   inputLine.appendChild(promptEl); inputLine.appendChild(input);
   const hintEl = document.createElement('div'); hintEl.className = 'meme-hint';
   hintEl.textContent = '\` to close \xb7 type + enter to activate';
-  panel.appendChild(hdr); panel.appendChild(inputLine); panel.appendChild(hintEl);
+  const deployBtn = document.createElement('button');
+  deployBtn.className = 'meme-deploy-btn';
+  deployBtn.textContent = '→ deploy eventsnap';
+  deployBtn.onclick = () => deployProject('eventsnap');
+  panel.appendChild(hdr); panel.appendChild(inputLine); panel.appendChild(hintEl); panel.appendChild(deployBtn);
   document.body.appendChild(panel);
 
   const indicator = document.createElement('div'); indicator.id = 'meme-indicator';
@@ -525,7 +529,6 @@ const STATUS_MODULES = [
     stack: 'Next.js · Supabase · AWS Rekognition · Cloudflare R2',
     infra: 'GCP VM · Cloudflare · Supabase cloud',
     desc: 'Face-recognition photo delivery platform for Indian wedding photographers.',
-    deployId: 'eventsnap',
   },
 ];
 
@@ -603,7 +606,6 @@ function statusRender(states) {
         </div>
         <div class="status-uptime-bar" title="check history — oldest to newest">${segs}</div>
         <div class="status-uptime-label">${uptimeTxt}</div>
-        ${mod.deployId ? `<div class="status-deploy-row"><button class="status-deploy-btn" onclick="deployProject('${mod.deployId}')">→ deploy</button></div>` : ''}
       </div>`;
   }).join('');
 }

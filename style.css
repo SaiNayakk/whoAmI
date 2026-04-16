@@ -908,6 +908,20 @@ footer a:hover { color: var(--text); }
   flex-shrink: 0;
 }
 
+.meme-deploy-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.65rem;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, color 0.15s;
+  margin-top: 0.2rem;
+}
+.meme-deploy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
 #meme-input {
   background: transparent;
   border: none;
