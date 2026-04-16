@@ -1193,7 +1193,13 @@ footer a:hover { color: var(--text); }
   white-space: pre-wrap;
   word-break: break-all;
   margin: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }
+.deploy-modal-output::-webkit-scrollbar { width: 4px; }
+.deploy-modal-output::-webkit-scrollbar-track { background: transparent; }
+.deploy-modal-output::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.deploy-modal-output::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
