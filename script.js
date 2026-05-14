@@ -538,15 +538,6 @@ const STATUS_MODULES = [
     desc: 'Face-recognition photo delivery platform for Indian wedding photographers.',
   },
   {
-    id: 'BachatZen',
-    name: 'BachatZen',
-    url: 'https://github.com/SaiNayakk/BachatZen',
-    displayUrl: 'github.com/SaiNayakk/BachatZen',
-    stack: 'Java · Spring Boot · PostgreSQL · Flyway · Angular · Tailwind',
-    infra: 'local · not deployed',
-    desc: 'Personal job hunt command center — tracks pipeline, interviews, prep, expenses, habits, and mood in one place.',
-  },
-  {
     id: 'invoicesnap',
     name: 'invoicesnap',
     url: 'https://invoicesnap-saiworks.nncs.in/',
