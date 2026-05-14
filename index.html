@@ -552,10 +552,10 @@
 
       // fill water line to span full viewport width
       function fillWater() {
-        const charW   = water.getBoundingClientRect().width / (water.textContent.length || 1);
-        const pattern = '~^';
-        const count   = Math.ceil(window.innerWidth / (charW || 7.2)) + 4;
-        water.textContent = (pattern.repeat(Math.ceil(count / 2))).slice(0, count);
+        water.textContent = '~'; // measure one char first
+        const charW = water.getBoundingClientRect().width || 7.2;
+        const count = Math.ceil(window.innerWidth / charW) + 4;
+        water.textContent = '~^'.repeat(Math.ceil(count / 2)).slice(0, count);
       }
       fillWater();
       window.addEventListener('resize', fillWater);
