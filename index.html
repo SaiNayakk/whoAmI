@@ -544,15 +544,23 @@
 
   <script>
     window.addEventListener('load', function () {
-      const swimmer = document.getElementById('whale-swimmer');
-      let x   = 0;
-      let dir = 1;
+      const swimmer    = document.getElementById('whale-swimmer');
+      const bodyPre    = swimmer.querySelector('.whale-body');
+      const fountainPre = swimmer.querySelector('.whale-fountain');
 
-function maxX() {
-        return window.innerWidth - swimmer.offsetWidth - 8;
-      }
+      const normalBody = bodyPre.textContent;
+      const deadBody   = normalBody.replace('O', 'x');
+
+      let x          = 0;
+      let dir        = 1;
+      let dead       = false;
+      let clickCount = 0;
+      let clickTimer = null;
+
+      function maxX() { return window.innerWidth - swimmer.offsetWidth - 8; }
 
       function update() {
+        if (dead) return;
         x += dir * 0.7;
         if (x >= maxX()) { x = maxX(); dir = -1; }
         if (x <= 0)      { x = 0;      dir =  1; }
@@ -561,7 +569,37 @@ function maxX() {
         requestAnimationFrame(update);
       }
 
-      swimmer.addEventListener('click', function () { dir *= -1; });
+      function die() {
+        dead = true;
+        bodyPre.textContent           = deadBody;
+        fountainPre.style.visibility  = 'hidden';
+        swimmer.style.transition      = 'bottom 1.4s ease-in';
+        swimmer.style.bottom          = '-120px';
+        setTimeout(respawn, 3000);
+      }
+
+      function respawn() {
+        swimmer.style.transition      = 'none';
+        swimmer.style.bottom          = '0px';
+        bodyPre.textContent           = normalBody;
+        fountainPre.style.visibility  = '';
+        dead       = false;
+        clickCount = 0;
+        requestAnimationFrame(update);
+      }
+
+      swimmer.addEventListener('click', function () {
+        if (dead) return;
+        clickCount++;
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(function () { clickCount = 0; }, 900);
+        if (clickCount >= 5) {
+          die();
+        } else {
+          dir *= -1;
+        }
+      });
+
       update();
     });
   </script>
