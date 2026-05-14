@@ -161,14 +161,14 @@ nav {
   position: relative;
   width: 100%;
   height: 90px;
-  overflow: hidden;
 }
 
 .whale-swimmer {
   position: absolute;
   bottom: 0.25rem;
+  left: 0;
   cursor: pointer;
-  transform-origin: center center;
+  transform-origin: left center;
 }
 
 .whale-art {

@@ -544,25 +544,27 @@
   </script>
 
   <script>
-    (function () {
+    window.addEventListener('load', function () {
       const swimmer = document.getElementById('whale-swimmer');
-      const stage   = swimmer.parentElement;
       let x   = 0;
       let dir = 1;
 
+      function maxX() {
+        return window.innerWidth - swimmer.offsetWidth - 8;
+      }
+
       function update() {
-        const maxX = stage.clientWidth - swimmer.offsetWidth;
         x += dir * 0.7;
-        if (x >= maxX) { x = maxX; dir = -1; }
-        if (x <= 0)    { x = 0;    dir =  1; }
+        if (x >= maxX()) { x = maxX(); dir = -1; }
+        if (x <= 0)      { x = 0;      dir =  1; }
         swimmer.style.left      = x + 'px';
         swimmer.style.transform = dir === 1 ? 'scaleX(1)' : 'scaleX(-1)';
         requestAnimationFrame(update);
       }
 
-      swimmer.addEventListener('click', () => { dir *= -1; });
+      swimmer.addEventListener('click', function () { dir *= -1; });
       update();
-    })();
+    });
   </script>
 </body>
 </html>
