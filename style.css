@@ -168,10 +168,11 @@ nav {
   bottom: 0.25rem;
   left: 0;
   cursor: pointer;
-  transform-origin: left center;
+  transform-origin: center center;
 }
 
-.whale-art {
+.whale-fountain,
+.whale-body {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.72rem;
   line-height: 1.35;
@@ -183,10 +184,10 @@ nav {
   transition: opacity 0.2s;
 }
 
-.whale-swimmer:hover .whale-art { opacity: 0.75; }
+.whale-swimmer:hover .whale-fountain,
+.whale-swimmer:hover .whale-body { opacity: 0.75; }
 
 .whale-fountain {
-  display: inline-block;
   animation: fountain-bob 0.9s ease-in-out infinite;
 }
 
