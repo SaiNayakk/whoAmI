@@ -636,26 +636,10 @@ function statusRender(states) {
   const grid = document.getElementById('modules-grid');
   if (!grid) return;
 
-  grid.innerHTML = STATUS_MODULES.map(mod => {
-    if (mod.todo) {
-      return `
-      <div class="status-card status-card-todo">
-        <div class="status-card-header">
-          <div class="status-name-group">
-            <div class="status-name">${mod.name}</div>
-          </div>
-          <div class="status-badge">
-            <span class="status-indicator status-dot-checking">○ todo</span>
-          </div>
-        </div>
-        <div class="status-divider"></div>
-        <div class="status-meta">
-          <div class="status-meta-line">stack: <span>${mod.stack}</span></div>
-          <div class="status-meta-line">desc: <span>${mod.desc}</span></div>
-        </div>
-      </div>`;
-    }
+  const liveModules = STATUS_MODULES.filter(m => !m.todo);
+  const todoModules = STATUS_MODULES.filter(m => m.todo);
 
+  const renderLive = liveModules.map(mod => {
     const s = states[mod.id] || { status: 'checking', ms: null };
     const history = statusGetHistory(mod.id);
 
@@ -700,6 +684,30 @@ function statusRender(states) {
         <div class="status-uptime-label">${uptimeTxt}</div>
       </div>`;
   }).join('');
+
+  const renderTodo = todoModules.length ? `
+    <div class="status-wip-section">
+      <span class="status-wip-icon">🚧</span>
+      <span>work in progress</span>
+    </div>
+    ${todoModules.map(mod => `
+    <div class="status-card status-card-todo">
+      <div class="status-card-header">
+        <div class="status-name-group">
+          <div class="status-name">${mod.name}</div>
+        </div>
+        <div class="status-badge">
+          <span class="status-indicator status-dot-checking">○ wip</span>
+        </div>
+      </div>
+      <div class="status-divider"></div>
+      <div class="status-meta">
+        <div class="status-meta-line">stack: <span>${mod.stack}</span></div>
+        <div class="status-meta-line">desc: <span>${mod.desc}</span></div>
+      </div>
+    </div>`).join('')}` : '';
+
+  grid.innerHTML = renderLive + renderTodo;
 }
 
 const _sState = {};
