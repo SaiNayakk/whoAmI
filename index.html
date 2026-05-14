@@ -296,13 +296,13 @@
 
   <!-- WHALE -->
   <div class="whale-stage">
+    <pre class="whale-water" id="whale-water"></pre>
     <div class="whale-swimmer" id="whale-swimmer" title="click to flip">
       <pre class="whale-fountain">       .
       ":"</pre>
       <pre class="whale-body">    ___:____     |"\/"|
   ,'        `.    \  /
-  |  O        \___/  |
-~^~^~^~^~^~^~^~^~^~^~^~^~</pre>
+  |  O        \___/  |</pre>
     </div>
   </div>
 
@@ -546,8 +546,19 @@
   <script>
     window.addEventListener('load', function () {
       const swimmer = document.getElementById('whale-swimmer');
+      const water   = document.getElementById('whale-water');
       let x   = 0;
       let dir = 1;
+
+      // fill water line to span full viewport width
+      function fillWater() {
+        const charW   = water.getBoundingClientRect().width / (water.textContent.length || 1);
+        const pattern = '~^';
+        const count   = Math.ceil(window.innerWidth / (charW || 7.2)) + 4;
+        water.textContent = (pattern.repeat(Math.ceil(count / 2))).slice(0, count);
+      }
+      fillWater();
+      window.addEventListener('resize', fillWater);
 
       function maxX() {
         return window.innerWidth - swimmer.offsetWidth - 8;
