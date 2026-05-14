@@ -139,6 +139,7 @@ nav {
   max-width: 680px;
   margin: 0 auto;
   padding: 4.5rem 2rem 6rem;
+  position: relative;
 }
 
 .section-label {
@@ -158,23 +159,15 @@ nav {
 /* ── HERO ── */
 .hero-whale {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   line-height: 1.4;
   color: var(--muted);
-  margin: 2.5rem 0 0;
   white-space: pre;
   user-select: none;
-  opacity: 0.5;
-}
-
-.hero-ascii {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.85rem;
-  line-height: 1.3;
-  color: var(--accent);
-  margin: 0 0 1.5rem;
-  white-space: pre;
-  user-select: none;
+  opacity: 0.45;
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
 }
 
 .hero-name {
