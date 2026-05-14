@@ -558,7 +558,7 @@
         if (x >= maxX()) { x = maxX(); dir = -1; }
         if (x <= 0)      { x = 0;      dir =  1; }
         swimmer.style.left      = x + 'px';
-        swimmer.style.transform = dir === 1 ? 'scaleX(1)' : 'scaleX(-1)';
+        swimmer.style.transform = dir === 1 ? 'scaleX(-1)' : 'scaleX(1)';
         requestAnimationFrame(update);
       }
 
