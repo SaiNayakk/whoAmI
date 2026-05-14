@@ -529,15 +529,6 @@ function showSection(name) {
 // ── MODULES (live status) ──
 const STATUS_MODULES = [
   {
-    id: 'nse-algo-trader',
-    name: 'nse-algo-trader',
-    url: 'https://github.com/SaiNayakk/nse-algo-trader',
-    displayUrl: 'github.com/SaiNayakk/nse-algo-trader',
-    stack: 'Python · FastAPI · Pandas · yfinance · Anthropic · Redis · PostgreSQL · React · Vite',
-    infra: 'local · not deployed',
-    desc: 'AI-powered NSE stock backtesting and paper trading platform with multi-LLM strategy support.',
-  },
-  {
     id: 'eventsnap',
     name: 'eventsnap',
     url: 'https://eventsnap-saiworks.nncs.in/',
@@ -567,19 +558,15 @@ const STATUS_MODULES = [
   {
     id: 'menuqr',
     name: 'menuqr',
-    url: 'https://github.com/SaiNayakk/menuqr',
-    displayUrl: 'github.com/SaiNayakk/menuqr',
+    todo: true,
     stack: 'Next.js · Supabase · Razorpay · WhatsApp API',
-    infra: 'local · not deployed',
     desc: 'SaaS platform for restaurants to replace physical menus with QR codes and handle orders via WhatsApp.',
   },
   {
     id: 'staffping',
     name: 'staffping',
-    url: 'https://github.com/SaiNayakk/staffping',
-    displayUrl: 'github.com/SaiNayakk/staffping',
+    todo: true,
     stack: 'Next.js · Supabase · Razorpay · WhatsApp API',
-    infra: 'local · not deployed',
     desc: 'Shift scheduling and QR code clock-in tool for small businesses with WhatsApp attendance notifications.',
   },
   {
@@ -603,10 +590,8 @@ const STATUS_MODULES = [
   {
     id: 'backseat',
     name: 'backseat',
-    url: 'https://github.com/SaiNayakk/backseat',
-    displayUrl: 'github.com/SaiNayakk/backseat',
+    todo: true,
     stack: 'Python · FastAPI · Typer · SSH/SCP · Cloudflare tunnels',
-    infra: 'CLI tool · not deployed',
     desc: 'Turns an old Android phone (Termux) into a personal deploy server with SSH and Cloudflare tunnel support.',
   },
   {
@@ -617,24 +602,6 @@ const STATUS_MODULES = [
     stack: 'React · Vite · MUI · Recharts',
     infra: 'self-hosted · old Android phone',
     desc: 'EMI calculator with prepayment analysis, tax benefits, amortization, shareable links.',
-  },
-  {
-    id: 'confluence-fetcher',
-    name: 'confluence-fetcher',
-    url: 'https://github.com/SaiNayakk/confluence-fetcher',
-    displayUrl: 'github.com/SaiNayakk/confluence-fetcher',
-    stack: 'Python · FastAPI · BeautifulSoup4 · markdownify',
-    infra: 'CLI tool · not deployed',
-    desc: 'Fetches Confluence pages via browser cookies and converts them to clean Markdown.',
-  },
-  {
-    id: 'mining-stream',
-    name: 'mining-stream',
-    url: 'https://github.com/SaiNayakk/mining-stream',
-    displayUrl: 'github.com/SaiNayakk/mining-stream',
-    stack: 'Node.js · WebSockets · node-fetch',
-    infra: 'local · not deployed',
-    desc: 'Infinite idle mining stream with live YouTube chat integration.',
   },
 ];
 
@@ -670,6 +637,25 @@ function statusRender(states) {
   if (!grid) return;
 
   grid.innerHTML = STATUS_MODULES.map(mod => {
+    if (mod.todo) {
+      return `
+      <div class="status-card status-card-todo">
+        <div class="status-card-header">
+          <div class="status-name-group">
+            <div class="status-name">${mod.name}</div>
+          </div>
+          <div class="status-badge">
+            <span class="status-indicator status-dot-checking">○ todo</span>
+          </div>
+        </div>
+        <div class="status-divider"></div>
+        <div class="status-meta">
+          <div class="status-meta-line">stack: <span>${mod.stack}</span></div>
+          <div class="status-meta-line">desc: <span>${mod.desc}</span></div>
+        </div>
+      </div>`;
+    }
+
     const s = states[mod.id] || { status: 'checking', ms: null };
     const history = statusGetHistory(mod.id);
 
@@ -723,10 +709,10 @@ async function runStatusChecks() {
   const btn = document.getElementById('status-refresh-btn');
   if (btn) btn.disabled = true;
 
-  STATUS_MODULES.forEach(m => { _sState[m.id] = { status: 'checking', ms: null }; });
+  STATUS_MODULES.filter(m => !m.todo).forEach(m => { _sState[m.id] = { status: 'checking', ms: null }; });
   statusRender(_sState);
 
-  await Promise.all(STATUS_MODULES.map(async mod => {
+  await Promise.all(STATUS_MODULES.filter(m => !m.todo).map(async mod => {
     const res = await statusPingModule(mod);
     statusPushHistory(mod.id, res.up);
     _sState[mod.id] = { status: res.up ? 'up' : 'down', ms: res.ms };
@@ -740,7 +726,7 @@ async function runStatusChecks() {
 }
 
 // render checking state immediately so placeholder never shows
-STATUS_MODULES.forEach(m => { _sState[m.id] = { status: 'checking', ms: null }; });
+STATUS_MODULES.filter(m => !m.todo).forEach(m => { _sState[m.id] = { status: 'checking', ms: null }; });
 statusRender(_sState);
 
 // kick off actual pings as soon as DOM is ready
