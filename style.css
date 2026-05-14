@@ -160,7 +160,7 @@ nav {
 .whale-stage {
   position: relative;
   width: 100%;
-  height: 90px;
+  height: 80px;
   overflow: hidden;
   opacity: 0.2;
   transition: opacity 0.3s ease;
@@ -168,24 +168,9 @@ nav {
 
 .whale-stage:hover { opacity: 0.7; }
 
-.whale-water {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.72rem;
-  line-height: 1;
-  color: var(--muted);
-  white-space: pre;
-  margin: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
 .whale-swimmer {
   position: absolute;
-  bottom: 0.9rem;
+  bottom: 0;
   left: 0;
   cursor: pointer;
   transform-origin: center center;
