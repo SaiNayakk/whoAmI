@@ -294,6 +294,18 @@
     </div>
   </section>
 
+  <!-- WHALE -->
+  <div class="whale-stage">
+    <div class="whale-swimmer" id="whale-swimmer" title="click to flip">
+      <pre class="whale-art"><span class="whale-fountain">       .
+      ":"
+</span>    ___:____     |"\/"|
+  ,'        `.    \  /
+  |  O        \___/  |
+~^~^~^~^~^~^~^~^~^~^~^~^~</pre>
+    </div>
+  </div>
+
   <footer>
     <span>saishravan nitish nayak</span>
     <span class="footer-sep">·</span>
@@ -531,31 +543,19 @@
     }
   </script>
 
-  <!-- WHALE -->
-  <div class="whale-container">
-    <div class="whale-swimmer" id="whale-swimmer" title="click me">
-      <pre class="whale-art"><span class="whale-fountain">       .
-      ":"
-</span>    ___:____     |"\/"|
-  ,'        `.    \  /
-  |  O        \___/  |
-~^~^~^~^~^~^~^~^~^~^~^~^~</pre>
-    </div>
-  </div>
-
   <script>
     (function () {
       const swimmer = document.getElementById('whale-swimmer');
-      const container = swimmer.parentElement;
-      let x = window.innerWidth - 280;
-      let dir = -1;
+      const stage   = swimmer.parentElement;
+      let x   = 0;
+      let dir = 1;
 
       function update() {
-        const maxX = container.clientWidth - swimmer.offsetWidth;
-        x += dir * 0.6;
+        const maxX = stage.clientWidth - swimmer.offsetWidth;
+        x += dir * 0.7;
         if (x >= maxX) { x = maxX; dir = -1; }
         if (x <= 0)    { x = 0;    dir =  1; }
-        swimmer.style.left = x + 'px';
+        swimmer.style.left      = x + 'px';
         swimmer.style.transform = dir === 1 ? 'scaleX(1)' : 'scaleX(-1)';
         requestAnimationFrame(update);
       }
