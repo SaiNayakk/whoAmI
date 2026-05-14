@@ -157,17 +157,47 @@ nav {
 }
 
 /* ── HERO ── */
-.hero-whale {
+.whale-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  pointer-events: none;
+  z-index: 50;
+  overflow: hidden;
+}
+
+.whale-swimmer {
+  position: absolute;
+  bottom: 0.5rem;
+  cursor: pointer;
+  pointer-events: all;
+  transform-origin: center center;
+}
+
+.whale-art {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.72rem;
-  line-height: 1.4;
+  line-height: 1.35;
   color: var(--muted);
+  opacity: 0.45;
   white-space: pre;
   user-select: none;
-  opacity: 0.45;
-  position: absolute;
-  bottom: 2rem;
-  left: 2rem;
+  margin: 0;
+  transition: opacity 0.2s;
+}
+
+.whale-swimmer:hover .whale-art { opacity: 0.75; }
+
+.whale-fountain {
+  display: inline-block;
+  animation: fountain-bob 0.9s ease-in-out infinite;
+}
+
+@keyframes fountain-bob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-4px); }
 }
 
 .hero-name {

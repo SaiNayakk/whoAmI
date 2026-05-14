@@ -63,13 +63,6 @@
           <a href="mailto:sai31nayak@gmail.com">sai31nayak@gmail.com</a>
         </div>
       </div>
-      <pre class="hero-whale">
-       .
-      ":"
-    ___:____     |"\/"|
-  ,'        `.    \  /
-  |  O        \___/  |
-~^~^~^~^~^~^~^~^~^~^~^~^~</pre>
     </div>
   </section>
 
@@ -536,6 +529,40 @@
         await db.ref('snake_leaderboard').push(entry).catch(() => {});
       }
     }
+  </script>
+
+  <!-- WHALE -->
+  <div class="whale-container">
+    <div class="whale-swimmer" id="whale-swimmer" title="click me">
+      <pre class="whale-art"><span class="whale-fountain">       .
+      ":"
+</span>    ___:____     |"\/"|
+  ,'        `.    \  /
+  |  O        \___/  |
+~^~^~^~^~^~^~^~^~^~^~^~^~</pre>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const swimmer = document.getElementById('whale-swimmer');
+      const container = swimmer.parentElement;
+      let x = window.innerWidth - 280;
+      let dir = -1;
+
+      function update() {
+        const maxX = container.clientWidth - swimmer.offsetWidth;
+        x += dir * 0.6;
+        if (x >= maxX) { x = maxX; dir = -1; }
+        if (x <= 0)    { x = 0;    dir =  1; }
+        swimmer.style.left = x + 'px';
+        swimmer.style.transform = dir === 1 ? 'scaleX(1)' : 'scaleX(-1)';
+        requestAnimationFrame(update);
+      }
+
+      swimmer.addEventListener('click', () => { dir *= -1; });
+      update();
+    })();
   </script>
 </body>
 </html>
