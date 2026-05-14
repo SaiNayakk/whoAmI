@@ -156,6 +156,17 @@ nav {
 }
 
 /* ── HERO ── */
+.hero-whale {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--muted);
+  margin: 2.5rem 0 0;
+  white-space: pre;
+  user-select: none;
+  opacity: 0.5;
+}
+
 .hero-ascii {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.85rem;
