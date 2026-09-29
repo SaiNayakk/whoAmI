@@ -7,13 +7,13 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=2.4.5" />
 </head>
 <body>
 
   <div class="statusbar">
     <span class="status-dot"></span>
-    <span>online &nbsp;·&nbsp; bengaluru, india &nbsp;·&nbsp; v2.2.0</span>
+    <span>online &nbsp;·&nbsp; bengaluru, india<span id="phone-vitals" class="phone-vitals"></span> &nbsp;·&nbsp; v2.2.0</span>
   </div>
 
   <nav>
@@ -22,6 +22,7 @@
       <a href="#" class="nav-link active" data-section="index" onclick="showSection('index')">~/</a>
       <a href="#" class="nav-link" data-section="changelog" onclick="showSection('changelog')">changelog</a>
       <a href="#" class="nav-link" data-section="modules" onclick="showSection('modules')">modules</a>
+      <a href="#" class="nav-link" data-section="server" onclick="showSection('server')">server</a>
       <a href="#" class="nav-link" data-section="log" onclick="showSection('log')">log</a>
       <a href="#" class="nav-link" data-section="guestbook" onclick="showSection('guestbook')">guestbook.txt</a>
     </div>
@@ -156,6 +157,66 @@
       <div class="status-meta-row" style="margin-top:2rem;">
         <span id="status-last-time" class="status-last-time">—</span>
         <button class="status-refresh-btn" id="status-refresh-btn" onclick="runStatusChecks()">↺ refresh</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVER -->
+  <section id="server" class="section">
+    <div class="container">
+      <div class="section-label">// server</div>
+      <p class="section-sub">everything on this page runs on a phone I already owned.</p>
+
+      <div class="srv-live" aria-live="polite">
+        <div class="srv-stat"><span class="srv-val" id="srv-apps">—</span><span class="srv-key">apps up</span></div>
+        <div class="srv-stat"><span class="srv-val" id="srv-batt">—</span><span class="srv-key">battery</span></div>
+        <div class="srv-stat"><span class="srv-val" id="srv-temp">—</span><span class="srv-key">temperature</span></div>
+        <div class="srv-stat"><span class="srv-val" id="srv-up">—</span><span class="srv-key">server uptime</span></div>
+      </div>
+      <p class="srv-note" id="srv-note">asking the phone…</p>
+
+      <div class="srv-block">
+        <div class="srv-h">how a deploy travels</div>
+<pre class="srv-diagram" aria-label="Deploy flow: the laptop builds the app and copies it to the phone over SSH; the phone runs it; Cloudflare's tunnel carries visitors to it.">laptop ──<span class="a">build</span>──▶ bundle ──<span class="a">ssh</span>──▶ <span class="t">phone · termux</span>
+                                ├─ backseat agent  <span class="m">keeps every app alive</span>
+                                ├─ pocketbase      <span class="m">one database, all apps</span>
+                                └─ cloudflared ──<span class="a">tunnel</span>──▶ cloudflare ◀── <span class="t">you</span></pre>
+        <ol class="srv-steps">
+          <li><span>build on the laptop.</span> the phone runs apps; it never compiles them.</li>
+          <li><span>ship over ssh.</span> the new build lands beside the old one, so a rollback is one rename.</li>
+          <li><span>backseat restarts it.</span> my agent on the phone supervises every app: restarts on crash, keeps logs, reports health.</li>
+          <li><span>cloudflare carries traffic.</span> the tunnel dials out from the phone, so there are no open ports and no router setup.</li>
+          <li><span>it survives reboots.</span> termux:boot brings everything back; a wake lock keeps the cpu awake.</li>
+        </ol>
+      </div>
+
+      <div class="srv-block">
+        <div class="srv-h">what it costs</div>
+        <div class="srv-cost">
+          <div class="srv-row"><span>a comparable 4 GB cloud server <em>(digitalocean, aws lightsail)</em></span><span>$24/mo ≈ ₹2,000</span></div>
+          <div class="srv-row"><span>electricity for the phone <em>(~1.2 W measured)</em></span><span>≈ ₹10/mo</span></div>
+          <div class="srv-row"><span>cloudflare tunnel and dns</span><span>₹0</span></div>
+          <div class="srv-row srv-total"><span>saved</span><span>≈ ₹2,000 a month · ₹24,000 a year</span></div>
+        </div>
+        <p class="srv-fine">not counted, because they cost the same wherever the apps run: photo storage (cloudflare r2 free tier), face matching (aws, pay per use), ai (gemini free tier), the domain. cloud prices as of sep 2026.</p>
+      </div>
+
+      <div class="srv-block">
+        <div class="srv-h">the honest trade-offs</div>
+        <ul class="srv-list">
+          <li>if the home wifi drops, the phone falls back to mobile data and the tunnel reconnects on its own.</li>
+          <li>it's still one device: if the phone itself goes down, so does everything on it.</li>
+          <li>a power cut is covered by the phone's own battery, for a few hours.</li>
+          <li>android wants to sleep background apps; a wake lock and unrestricted battery settle that.</li>
+          <li>great for side projects and demos. i wouldn't promise anyone an sla on it.</li>
+        </ul>
+      </div>
+
+      <div class="srv-links">
+        <a href="https://github.com/SaiNayakk/backseat" target="_blank" rel="noopener">backseat on github ↗</a>
+        <span>·</span>
+        <a href="https://backseat-saiworks.nncs.in/dashboard" target="_blank" rel="noopener">the phone's live dashboard ↗</a>
+        <span class="srv-lock">read-only</span>
       </div>
     </div>
   </section>
@@ -311,6 +372,8 @@
     <span>bengaluru / silvassa</span>
     <span class="footer-sep">·</span>
     <a href="mailto:sai31nayak@gmail.com">sai31nayak@gmail.com</a>
+    <span class="footer-sep deploy-info" hidden>·</span>
+    <a id="deploy-info" class="deploy-info" target="_blank" rel="noopener" hidden></a>
   </footer>
 
   <!-- Deploy terminal modal -->
@@ -324,7 +387,7 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=2.4.5"></script>
 
   <!-- Firebase (only loads when modules section has the canvas) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>

@@ -532,18 +532,22 @@ const STATUS_MODULES = [
     id: 'eventsnap',
     name: 'tasveerlee',
     url: 'https://eventsnap-saiworks.nncs.in/',
+    tech: 'https://eventsnap-saiworks.nncs.in/demo/technical',
     displayUrl: 'eventsnap-saiworks.nncs.in',
     stack: 'Next.js · PocketBase · AWS Rekognition · Cloudflare R2',
     infra: 'old Android phone · Cloudflare tunnel',
+    route: ['you', 'cloudflare', 'my phone', 'next.js'],
     desc: 'Face-recognition photo delivery for Indian weddings: guests register with a selfie and get a private WhatsApp gallery of the photos they appear in. Formerly eventsnap.',
   },
   {
     id: 'invoicesnap',
     name: 'invoicesnap',
     url: 'https://invoicesnap-saiworks.nncs.in/',
+    tech: 'https://invoicesnap-saiworks.nncs.in/demo/technical',
     displayUrl: 'invoicesnap-saiworks.nncs.in',
     stack: 'Next.js · PocketBase · Gemini · @react-pdf/renderer',
     infra: 'old Android phone · Cloudflare tunnel',
+    route: ['you', 'cloudflare', 'my phone', 'next.js'],
     desc: 'GST-compliant invoices for Indian freelancers: AI drafts from a description, clients pay by UPI, reminders go out on WhatsApp.',
   },
   {
@@ -564,9 +568,11 @@ const STATUS_MODULES = [
     id: 'waitlistdrop',
     name: 'waitlistdrop',
     url: 'https://waitlist-saiworks.nncs.in/',
+    tech: 'https://waitlist-saiworks.nncs.in/demo/technical',
     displayUrl: 'waitlist-saiworks.nncs.in',
     stack: 'Next.js · PocketBase · Radix UI · web-push',
     infra: 'old Android phone · Cloudflare tunnel',
+    route: ['you', 'cloudflare', 'my phone', 'next.js'],
     desc: 'Waitlist management with QR codes and web push notifications.',
   },
   {
@@ -582,11 +588,12 @@ const STATUS_MODULES = [
     id: 'backseat',
     name: 'backseat',
     url: 'https://backseat-saiworks.nncs.in/ping',
-    link: 'https://backseat-saiworks.nncs.in/dashboard',
-    displayUrl: 'backseat-saiworks.nncs.in/dashboard',
+    link: '#server',
+    displayUrl: '~/server: how the phone runs everything',
     stack: 'Python · Flask · Typer · SSH/SCP · Cloudflare tunnels',
     infra: 'old Android phone · Termux',
-    desc: 'Turns an old Android phone (Termux) into a personal deploy server with SSH and Cloudflare tunnel support. The live dashboard of the phone serving these apps (password-protected).',
+    route: ['you', 'cloudflare', 'the phone'],
+    desc: 'Turns an old Android phone (Termux) into a personal deploy server with SSH and Cloudflare tunnel support. Its live dashboard shows the phone serving these apps.',
   },
   {
     id: 'homeloan-calc',
@@ -661,7 +668,9 @@ function statusRender(states) {
         <div class="status-card-header">
           <div class="status-name-group">
             <div class="status-name">${mod.name}</div>
-            <div class="status-url"><a href="${mod.link || mod.url}" target="_blank" rel="noopener">${mod.displayUrl} ↗</a></div>
+            <div class="status-url">${mod.tech
+              ? `<a href="${mod.tech}" target="_blank" rel="noopener">how it's built ↗</a> <span class="status-url-sep">·</span> <a class="status-url-live" href="${mod.url}" target="_blank" rel="noopener">live app ↗</a>`
+              : `<a href="${mod.link || mod.url}"${(mod.link || mod.url).startsWith('#') ? '' : ' target="_blank" rel="noopener"'}>${mod.displayUrl} ${(mod.link || mod.url).startsWith('#') ? '→' : '↗'}</a>`}</div>
           </div>
           <div class="status-badge">
             <span class="status-indicator ${dotClass}">${dotChar} ${label}</span>
@@ -671,7 +680,12 @@ function statusRender(states) {
         <div class="status-divider"></div>
         <div class="status-meta">
           <div class="status-meta-line">stack: <span>${mod.stack}</span></div>
-          <div class="status-meta-line">infra: <span>${mod.infra}</span></div>
+          ${mod.route
+            ? `<div class="route" role="img" aria-label="route: ${mod.route.join(', then ')}">
+                 <span class="route-k">route</span>
+                 <ol class="route-line">${mod.route.map((r, i) => `<li class="${r.includes('phone') ? 'home' : ''}${i === mod.route.length - 1 ? ' end' : ''}"><i></i><span>${r}</span></li>`).join('')}<b class="route-packet"></b></ol>
+               </div>`
+            : `<div class="status-meta-line">infra: <span>${mod.infra}</span></div>`}
           <div class="status-meta-line">desc: <span>${mod.desc}</span></div>
         </div>
         <div class="status-uptime-bar" title="check history — oldest to newest">${segs}</div>
@@ -801,4 +815,120 @@ function closeDeployModal() {
 
   document.addEventListener('mouseleave', () => { cur.style.opacity = '0'; });
   document.addEventListener('mouseenter', () => { cur.style.opacity = '1'; });
+})();
+
+// ── PHONE VITALS ──
+// One cached request, shared by the status bar and the server section.
+let _vitals = null, _vitalsAt = 0;
+function phoneVitals() {
+  if (_vitals && Date.now() - _vitalsAt < 30000) return _vitals;
+  _vitalsAt = Date.now();
+  const ctrl = new AbortController();
+  setTimeout(() => ctrl.abort(), 6000);
+  _vitals = fetch('https://backseat-saiworks.nncs.in/public/vitals', { cache: 'no-cache', signal: ctrl.signal })
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .catch(e => { _vitals = null; throw e; });
+  return _vitals;
+}
+
+// ── PHONE VITALS (status bar) ──
+// The phone serving these apps reports a few public numbers (see backseat /public/vitals).
+(function () {
+  const el = document.getElementById('phone-vitals');
+  if (!el) return;
+
+  function ago(s) {
+    const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60);
+    return d ? `${d}d ${h}h` : h ? `${h}h ${m}m` : `${Math.max(m, 1)}m`;
+  }
+
+  async function refresh() {
+    try {
+      const v = await phoneVitals();
+      const parts = ['served by the phone', `${v.apps_up}/${v.apps_total} apps up`];
+      if (v.battery) {
+        parts.push(`batt ${v.battery.percent}%${v.battery.charging ? ' ⚡' : ''}`);
+        if (v.battery.temp_c != null) parts.push(`${Math.round(v.battery.temp_c)}°C`);
+      }
+      if (v.cpu_percent > 0) parts.push(`cpu ${v.cpu_percent}%`);
+      parts.push(`up ${ago(v.server_uptime_seconds)}`);
+      el.innerHTML = parts.map((p, i) => `&nbsp;·&nbsp; <span class="${i > 1 ? 'pv-extra' : ''}">${p}</span>`).join('');
+      el.title = 'live from the Android phone that serves these apps';
+    } catch {
+      el.textContent = '';   // phone unreachable: the status bar just looks like it always did
+    }
+  }
+  refresh();
+  setInterval(() => { if (document.visibilityState === 'visible') refresh(); }, 60000);
+})();
+
+// ── LAST UPDATED (footer) ──
+// Latest commit on the branch being served, cached for 10 minutes.
+(function () {
+  const BRANCH = 'v2.3';
+  const link = document.getElementById('deploy-info');
+  if (!link) return;
+  const KEY = 'deploy_info_' + BRANCH;
+
+  function ago(iso) {
+    const s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
+    if (s < 3600) return `${Math.max(1, Math.round(s / 60))}m ago`;
+    if (s < 86400) return `${Math.round(s / 3600)}h ago`;
+    return `${Math.round(s / 86400)}d ago`;
+  }
+  function show(c) {
+    link.textContent = `updated ${ago(c.date)} · ${c.sha}`;
+    link.href = `https://github.com/SaiNayakk/whoAmI/commit/${c.sha}`;
+    link.title = c.msg;
+    link.hidden = false;
+    document.querySelectorAll('.footer-sep.deploy-info').forEach(s => { s.hidden = false; });
+  }
+
+  let cached = null;
+  try { cached = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch {}
+  if (cached && Date.now() - cached.at < 600000) { show(cached); return; }
+  fetch(`https://api.github.com/repos/SaiNayakk/whoAmI/commits/${BRANCH}`)
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(j => {
+      const c = { sha: j.sha.slice(0, 7), date: j.commit.committer.date, msg: j.commit.message.split('\n')[0], at: Date.now() };
+      try { localStorage.setItem(KEY, JSON.stringify(c)); } catch {}
+      show(c);
+    })
+    .catch(() => { if (cached) show(cached); });
+})();
+
+// ── SERVER SECTION ──
+(function () {
+  const $ = id => document.getElementById(id);
+  if (!$('srv-apps')) return;
+  function dur(s) {
+    const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60);
+    return d ? `${d}d ${h}h` : h ? `${h}h ${m}m` : `${Math.max(m, 1)}m`;
+  }
+  async function refresh() {
+    try {
+      const v = await phoneVitals();
+      $('srv-apps').textContent = `${v.apps_up}/${v.apps_total}`;
+      $('srv-batt').textContent = v.battery ? `${v.battery.percent}%${v.battery.charging ? ' ⚡' : ''}` : 'n/a';
+      $('srv-temp').textContent = v.battery && v.battery.temp_c != null ? `${Math.round(v.battery.temp_c)}°C` : 'n/a';
+      $('srv-up').textContent = dur(v.server_uptime_seconds);
+      $('srv-note').textContent = 'live from the phone · refreshes every minute';
+    } catch {
+      $('srv-note').textContent = "the phone isn't answering right now. which is, admittedly, one of the trade-offs below.";
+    }
+  }
+  document.querySelector('a[data-section="server"]')?.addEventListener('click', refresh);
+  setInterval(() => { if ($('server').classList.contains('active') && document.visibilityState === 'visible') refresh(); }, 60000);
+  refresh();
+})();
+
+// Deep links: saiworks.nncs.in/#server opens that section.
+(function () {
+  function fromHash() {
+    const id = location.hash.slice(1);
+    const el = id && document.getElementById(id);
+    if (el && el.classList.contains('section')) showSection(id);
+  }
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
 })();
