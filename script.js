@@ -585,8 +585,8 @@ const STATUS_MODULES = [
     id: 'backseat',
     name: 'backseat',
     url: 'https://backseat-saiworks.nncs.in/ping',
-    link: 'https://backseat-saiworks.nncs.in/dashboard',
-    displayUrl: 'backseat-saiworks.nncs.in/dashboard',
+    link: '#server',
+    displayUrl: '~/server: how the phone runs everything',
     stack: 'Python · Flask · Typer · SSH/SCP · Cloudflare tunnels',
     infra: 'old Android phone · Termux',
     route: ['you', 'cloudflare', 'the phone itself'],
@@ -665,7 +665,7 @@ function statusRender(states) {
         <div class="status-card-header">
           <div class="status-name-group">
             <div class="status-name">${mod.name}</div>
-            <div class="status-url"><a href="${mod.link || mod.url}" target="_blank" rel="noopener">${mod.displayUrl} ↗</a></div>
+            <div class="status-url"><a href="${mod.link || mod.url}"${(mod.link || mod.url).startsWith('#') ? '' : ' target="_blank" rel="noopener"'}>${mod.displayUrl} ${(mod.link || mod.url).startsWith('#') ? '→' : '↗'}</a></div>
           </div>
           <div class="status-badge">
             <span class="status-indicator ${dotClass}">${dotChar} ${label}</span>
@@ -809,12 +809,25 @@ function closeDeployModal() {
   document.addEventListener('mouseenter', () => { cur.style.opacity = '1'; });
 })();
 
+// ── PHONE VITALS ──
+// One cached request, shared by the status bar and the server section.
+let _vitals = null, _vitalsAt = 0;
+function phoneVitals() {
+  if (_vitals && Date.now() - _vitalsAt < 30000) return _vitals;
+  _vitalsAt = Date.now();
+  const ctrl = new AbortController();
+  setTimeout(() => ctrl.abort(), 6000);
+  _vitals = fetch('https://backseat-saiworks.nncs.in/public/vitals', { cache: 'no-cache', signal: ctrl.signal })
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .catch(e => { _vitals = null; throw e; });
+  return _vitals;
+}
+
 // ── PHONE VITALS (status bar) ──
 // The phone serving these apps reports a few public numbers (see backseat /public/vitals).
 (function () {
   const el = document.getElementById('phone-vitals');
   if (!el) return;
-  const URL = 'https://backseat-saiworks.nncs.in/public/vitals';
 
   function ago(s) {
     const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60);
@@ -823,10 +836,7 @@ function closeDeployModal() {
 
   async function refresh() {
     try {
-      const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 6000);
-      const v = await (await fetch(URL, { cache: 'no-cache', signal: ctrl.signal })).json();
-      clearTimeout(t);
+      const v = await phoneVitals();
       const parts = ['served by the phone', `${v.apps_up}/${v.apps_total} apps up`];
       if (v.battery) {
         parts.push(`batt ${v.battery.percent}%${v.battery.charging ? ' ⚡' : ''}`);
@@ -877,4 +887,40 @@ function closeDeployModal() {
       show(c);
     })
     .catch(() => { if (cached) show(cached); });
+})();
+
+// ── SERVER SECTION ──
+(function () {
+  const $ = id => document.getElementById(id);
+  if (!$('srv-apps')) return;
+  function dur(s) {
+    const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60);
+    return d ? `${d}d ${h}h` : h ? `${h}h ${m}m` : `${Math.max(m, 1)}m`;
+  }
+  async function refresh() {
+    try {
+      const v = await phoneVitals();
+      $('srv-apps').textContent = `${v.apps_up}/${v.apps_total}`;
+      $('srv-batt').textContent = v.battery ? `${v.battery.percent}%${v.battery.charging ? ' ⚡' : ''}` : 'n/a';
+      $('srv-temp').textContent = v.battery && v.battery.temp_c != null ? `${Math.round(v.battery.temp_c)}°C` : 'n/a';
+      $('srv-up').textContent = dur(v.server_uptime_seconds);
+      $('srv-note').textContent = 'live from the phone · refreshes every minute';
+    } catch {
+      $('srv-note').textContent = "the phone isn't answering right now. which is, admittedly, one of the trade-offs below.";
+    }
+  }
+  document.querySelector('a[data-section="server"]')?.addEventListener('click', refresh);
+  setInterval(() => { if ($('server').classList.contains('active') && document.visibilityState === 'visible') refresh(); }, 60000);
+  refresh();
+})();
+
+// Deep links: saiworks.nncs.in/#server opens that section.
+(function () {
+  function fromHash() {
+    const id = location.hash.slice(1);
+    const el = id && document.getElementById(id);
+    if (el && el.classList.contains('section')) showSection(id);
+  }
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
 })();
