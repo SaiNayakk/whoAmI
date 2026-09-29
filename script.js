@@ -535,7 +535,7 @@ const STATUS_MODULES = [
     displayUrl: 'eventsnap-saiworks.nncs.in',
     stack: 'Next.js · PocketBase · AWS Rekognition · Cloudflare R2',
     infra: 'old Android phone · Cloudflare tunnel',
-    route: ['you', 'cloudflare', 'a phone in bengaluru', 'next.js'],
+    route: ['you', 'cloudflare', 'my phone', 'next.js'],
     desc: 'Face-recognition photo delivery for Indian weddings: guests register with a selfie and get a private WhatsApp gallery of the photos they appear in. Formerly eventsnap.',
   },
   {
@@ -545,7 +545,7 @@ const STATUS_MODULES = [
     displayUrl: 'invoicesnap-saiworks.nncs.in',
     stack: 'Next.js · PocketBase · Gemini · @react-pdf/renderer',
     infra: 'old Android phone · Cloudflare tunnel',
-    route: ['you', 'cloudflare', 'a phone in bengaluru', 'next.js'],
+    route: ['you', 'cloudflare', 'my phone', 'next.js'],
     desc: 'GST-compliant invoices for Indian freelancers: AI drafts from a description, clients pay by UPI, reminders go out on WhatsApp.',
   },
   {
@@ -569,7 +569,7 @@ const STATUS_MODULES = [
     displayUrl: 'waitlist-saiworks.nncs.in',
     stack: 'Next.js · PocketBase · Radix UI · web-push',
     infra: 'old Android phone · Cloudflare tunnel',
-    route: ['you', 'cloudflare', 'a phone in bengaluru', 'next.js'],
+    route: ['you', 'cloudflare', 'my phone', 'next.js'],
     desc: 'Waitlist management with QR codes and web push notifications.',
   },
   {
@@ -589,7 +589,7 @@ const STATUS_MODULES = [
     displayUrl: '~/server: how the phone runs everything',
     stack: 'Python · Flask · Typer · SSH/SCP · Cloudflare tunnels',
     infra: 'old Android phone · Termux',
-    route: ['you', 'cloudflare', 'the phone itself'],
+    route: ['you', 'cloudflare', 'the phone'],
     desc: 'Turns an old Android phone (Termux) into a personal deploy server with SSH and Cloudflare tunnel support. Its live dashboard shows the phone serving these apps.',
   },
   {
@@ -676,7 +676,10 @@ function statusRender(states) {
         <div class="status-meta">
           <div class="status-meta-line">stack: <span>${mod.stack}</span></div>
           ${mod.route
-            ? `<div class="status-meta-line">route: <span>${mod.route.join(' <span class="route-arrow">→</span> ')}</span></div>`
+            ? `<div class="route" role="img" aria-label="route: ${mod.route.join(', then ')}">
+                 <span class="route-k">route</span>
+                 <ol class="route-line">${mod.route.map((r, i) => `<li class="${r.includes('phone') ? 'home' : ''}${i === mod.route.length - 1 ? ' end' : ''}"><i></i><span>${r}</span></li>`).join('')}<b class="route-packet"></b></ol>
+               </div>`
             : `<div class="status-meta-line">infra: <span>${mod.infra}</span></div>`}
           <div class="status-meta-line">desc: <span>${mod.desc}</span></div>
         </div>
