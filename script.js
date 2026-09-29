@@ -532,6 +532,7 @@ const STATUS_MODULES = [
     id: 'eventsnap',
     name: 'tasveerlee',
     url: 'https://eventsnap-saiworks.nncs.in/',
+    tech: 'https://eventsnap-saiworks.nncs.in/demo/technical',
     displayUrl: 'eventsnap-saiworks.nncs.in',
     stack: 'Next.js · PocketBase · AWS Rekognition · Cloudflare R2',
     infra: 'old Android phone · Cloudflare tunnel',
@@ -542,6 +543,7 @@ const STATUS_MODULES = [
     id: 'invoicesnap',
     name: 'invoicesnap',
     url: 'https://invoicesnap-saiworks.nncs.in/',
+    tech: 'https://invoicesnap-saiworks.nncs.in/demo/technical',
     displayUrl: 'invoicesnap-saiworks.nncs.in',
     stack: 'Next.js · PocketBase · Gemini · @react-pdf/renderer',
     infra: 'old Android phone · Cloudflare tunnel',
@@ -566,6 +568,7 @@ const STATUS_MODULES = [
     id: 'waitlistdrop',
     name: 'waitlistdrop',
     url: 'https://waitlist-saiworks.nncs.in/',
+    tech: 'https://waitlist-saiworks.nncs.in/demo/technical',
     displayUrl: 'waitlist-saiworks.nncs.in',
     stack: 'Next.js · PocketBase · Radix UI · web-push',
     infra: 'old Android phone · Cloudflare tunnel',
@@ -665,7 +668,9 @@ function statusRender(states) {
         <div class="status-card-header">
           <div class="status-name-group">
             <div class="status-name">${mod.name}</div>
-            <div class="status-url"><a href="${mod.link || mod.url}"${(mod.link || mod.url).startsWith('#') ? '' : ' target="_blank" rel="noopener"'}>${mod.displayUrl} ${(mod.link || mod.url).startsWith('#') ? '→' : '↗'}</a></div>
+            <div class="status-url">${mod.tech
+              ? `<a href="${mod.tech}" target="_blank" rel="noopener">how it's built ↗</a> <span class="status-url-sep">·</span> <a class="status-url-live" href="${mod.url}" target="_blank" rel="noopener">live app ↗</a>`
+              : `<a href="${mod.link || mod.url}"${(mod.link || mod.url).startsWith('#') ? '' : ' target="_blank" rel="noopener"'}>${mod.displayUrl} ${(mod.link || mod.url).startsWith('#') ? '→' : '↗'}</a>`}</div>
           </div>
           <div class="status-badge">
             <span class="status-indicator ${dotClass}">${dotChar} ${label}</span>
