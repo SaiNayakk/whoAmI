@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How HomeLoanCalc works — Sai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .post-container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 4rem 2rem 7rem;
+    }
+    .post-back {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 3rem;
+      transition: color 0.15s;
+    }
+    .post-back:hover { color: var(--accent); }
+
+    .post-meta {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .post-meta-sep { color: var(--border); }
+
+    .post-title {
+      font-size: 1.6rem;
+      font-weight: 400;
+      line-height: 1.45;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.75rem;
+    }
+    .post-subtitle {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.6;
+    }
+    .post-body p {
+      font-size: 0.88rem;
+      color: #b8b2a8;
+      line-height: 1.85;
+      margin-bottom: 1.5rem;
+    }
+    .post-body p strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .post-body h2 {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 2.5rem 0 1rem;
+    }
+    .post-body blockquote {
+      border-left: 2px solid var(--accent);
+      padding-left: 1.25rem;
+      margin: 2rem 0;
+      font-style: italic;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+    .post-body .code-inline {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      padding: 0.1rem 0.4rem;
+      font-size: 0.8rem;
+      color: var(--accent);
+    }
+    .post-divider {
+      text-align: center;
+      color: var(--border);
+      margin: 2.5rem 0;
+      font-size: 0.8rem;
+      letter-spacing: 0.3em;
+    }
+    .post-footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .post-footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .medium-cta {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.2rem;
+      border: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .medium-cta:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .series-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      gap: 1rem;
+    }
+    .series-nav a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s;
+      max-width: 45%;
+      line-height: 1.5;
+    }
+    .series-nav a:hover { color: var(--accent); }
+    .series-label {
+      font-size: 0.68rem;
+      color: var(--border);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    @media (max-width: 600px) {
+      .post-container { padding: 2.5rem 1.4rem 5rem; }
+      .post-title { font-size: 1.25rem; }
+    }
+
+    .post-body pre.srv-diagram { margin: 1.5rem 0 2rem; font-size: 0.74rem; }
+    .post-body ul { margin: 0 0 1.5rem 1.1rem; font-size: 0.88rem; color: #b8b2a8; line-height: 1.85; }
+    .post-body li { margin-bottom: 0.35rem; }
+    .post-body li strong { color: var(--text); font-weight: 500; }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <div class="statusbar">
+    <span class="status-dot"></span>
+    <span>online &nbsp;·&nbsp; bengaluru, india &nbsp;·&nbsp; v2.4.0</span>
+  </div>
+
+  <nav>
+    <a href="../index.html" class="nav-name" style="text-decoration:none; color: inherit;">sai.</a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">~/</a>
+      <a href="../index.html#changelog" onclick="window.location='../index.html'; setTimeout(()=>showSection&&showSection('changelog'),100)" class="nav-link">changelog</a>
+      <a href="../index.html" onclick="sessionStorage.setItem('section','log'); window.location='../index.html'" class="nav-link active">log</a>
+    </div>
+  </nav>
+
+  <div class="post-container">
+    <a href="../index.html" class="post-back">← back to sai.</a>
+
+    <div class="post-meta">
+      <span>2026-09-30</span>
+      <span class="post-meta-sep">·</span>
+      <span>engineering &nbsp;/&nbsp; finance</span>
+      <span class="post-meta-sep">·</span>
+      <span>~5 min read</span>
+    </div>
+
+    <h1 class="post-title">How HomeLoanCalc works</h1>
+    <p class="post-subtitle">One month-by-month loop, the exact EMI, and Indian tax rules per financial year, in about 73 KB.</p>
+
+    <div class="post-body">
+
+      <p>
+        HomeLoanCalc answers the questions a bank's EMI calculator doesn't: what a prepayment in March does to the rest of the loan, when a 10% yearly step-up finishes it, what an RBI rate cut is worth, and how much of it all comes back as tax. <a href="https://medium.com/@sai31nayak/home-loans-in-india-are-confusing-so-i-built-a-calculator-cc88e1b5dbd1" target="_blank" rel="noopener">Why I built it ↗</a> is its own story. This is how it works.
+      </p>
+
+      <h2>one loop, month by month</h2>
+      <p>
+        Everything comes out of a single function, <span class="code-inline">simulate()</span>. It walks the loan one month at a time and writes a row per month: opening balance, interest, principal, any extra payment, closing balance, and the rate that month. Prepayments, step-ups and rate changes are just things that can happen inside that loop, so every combination of them works without special cases.
+      </p>
+<pre class="srv-diagram">for each month, until the balance is 0:
+  <span class="a">step-up</span>?      raise the EMI by n% every k months
+  <span class="a">rate change</span>?  keep the EMI (loan gets shorter)
+                or re-compute it over the months left
+  interest   = balance × rate ÷ 1200
+  <span class="a">guard</span>:       EMI ≤ interest? raise it, and say so
+  principal  = EMI − interest
+  extra      = any lump sum or recurring prepayment
+  balance   −= principal + extra</pre>
+      <p>
+        Two details matter more than they look. The EMI is kept <strong>exact</strong>, not rounded to the rupee: an early version rounded it and, on a 20-year loan, the last few paise spilled into a 241st month. And when a steep rate rise pushes the EMI below the month's interest, the balance would start growing forever. The loop raises the EMI instead and the page tells you it had to.
+      </p>
+
+      <h2>tax, the way the income tax act counts it</h2>
+      <p>
+        The schedule is regrouped into <strong>financial years</strong>, April to March, because that's how deductions are claimed. Your first EMI in November means a short first year. For each year:
+      </p>
+      <ul>
+        <li><strong>Section 24(b)</strong>: interest, capped at ₹2 lakh per borrower.</li>
+        <li><strong>Section 80C</strong>: principal, but only the room left after your EPF, insurance and the rest.</li>
+        <li><strong>Saving</strong>: deductions × your slab rate + 4% cess. Two co-borrowers can each claim their own caps.</li>
+        <li><strong>New regime</strong>: none of this applies to a self-occupied home, so it shows ₹0 rather than pretending.</li>
+      </ul>
+      <p>
+        It also flags the years where your interest is above the 24(b) cap. That's usually the strongest case for a prepayment early in the loan.
+      </p>
+
+      <h2>no backend, no database</h2>
+      <p>
+        Every input lives in the URL. Share the link and the other person sees exactly your plan; nothing is stored anywhere. Links from the first version, in two older formats, still open correctly, because people had already shared them.
+      </p>
+
+      <h2>light on purpose</h2>
+      <p>
+        The first version used Material UI and a charting library. It looked like every other calculator and shipped a lot of code for a page with one job. The rebuild uses hand-written components and a small SVG chart: the whole app is <strong>about 73 KB of gzipped JavaScript</strong>, works offline as an installable PWA, and has a dark mode.
+      </p>
+
+      <h2>tested where it counts</h2>
+      <p>
+        23 tests cover the money: the EMI matches the standard formula, the principal column sums exactly to the loan, a lump sum is applied once and never more than what's owed, both rate-change modes behave, the balance never grows, 24(b) and 80C caps hold per borrower, financial years split at March, and old links still decode. They run on every pull request before anything can merge.
+      </p>
+
+      <h2>where it runs</h2>
+      <p>
+        The build is a folder of static files, served by a 46-line Python script on <a href="../index.html#server">the phone that hosts all my apps</a>, behind a Cloudflare tunnel. Deploys go through the same guarded path as everything else: built from a merged, tagged commit, smoke-tested on the phone and through Cloudflare, and rolled back on their own if a check fails.
+      </p>
+
+      <div class="post-divider">— — —</div>
+
+      <p>
+        Try it at <a href="https://loancalc-saiworks.nncs.in/" target="_blank" rel="noopener">loancalc-saiworks.nncs.in ↗</a>. The code is on <a href="https://github.com/SaiNayakk/HomeLoanCalc" target="_blank" rel="noopener">github ↗</a>.
+      </p>
+
+    </div>
+
+    <div class="series-nav">
+      <a href="https://medium.com/@sai31nayak/home-loans-in-india-are-confusing-so-i-built-a-calculator-cc88e1b5dbd1" class="prev" target="_blank" rel="noopener">
+        <span class="series-label">← why i built it</span>
+        Home Loans in India Are Confusing — So I Built a Calculator
+      </a>
+      <a href="backseat.html" class="next">
+        <span class="series-label">where it runs →</span>
+        Backseat: how an old phone runs my apps
+      </a>
+    </div>
+
+    <div class="post-footer">
+      <p>Written by Sai &nbsp;·&nbsp; <a href="mailto:sai31nayak@gmail.com">sai31nayak@gmail.com</a> &nbsp;·&nbsp; <a href="https://github.com/SaiNayakk" target="_blank" rel="noopener">github ↗</a></p>
+    </div>
+  </div>
+
+  <script src="../script.js"></script>
+</body>
+</html>

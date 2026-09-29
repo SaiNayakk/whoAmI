@@ -599,10 +599,12 @@ const STATUS_MODULES = [
     id: 'homeloan-calc',
     name: 'homeloan-calc',
     url: 'https://loancalc-saiworks.nncs.in/',
+    tech: 'posts/homeloancalc.html',
     displayUrl: 'loancalc-saiworks.nncs.in',
-    stack: 'React · Vite · MUI · Recharts',
-    infra: 'self-hosted · old Android phone',
-    desc: 'EMI calculator with prepayment analysis, tax benefits, amortization, shareable links.',
+    stack: 'React 19 · Vite · hand-written SVG charts · Vitest · PWA',
+    infra: 'old Android phone · Cloudflare tunnel',
+    route: ['you', 'cloudflare', 'my phone', 'static files'],
+    desc: 'Home loan planner for India: prepayments, step-up EMIs, rate changes and Section 24(b)/80C tax savings per financial year, all in a shareable link.',
   },
 ];
 

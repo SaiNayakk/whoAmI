@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Backseat: how an old phone runs my apps — Sai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .post-container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 4rem 2rem 7rem;
+    }
+    .post-back {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 3rem;
+      transition: color 0.15s;
+    }
+    .post-back:hover { color: var(--accent); }
+
+    .post-meta {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .post-meta-sep { color: var(--border); }
+
+    .post-title {
+      font-size: 1.6rem;
+      font-weight: 400;
+      line-height: 1.45;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.75rem;
+    }
+    .post-subtitle {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.6;
+    }
+    .post-body p {
+      font-size: 0.88rem;
+      color: #b8b2a8;
+      line-height: 1.85;
+      margin-bottom: 1.5rem;
+    }
+    .post-body p strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .post-body h2 {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 2.5rem 0 1rem;
+    }
+    .post-body blockquote {
+      border-left: 2px solid var(--accent);
+      padding-left: 1.25rem;
+      margin: 2rem 0;
+      font-style: italic;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+    .post-body .code-inline {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      padding: 0.1rem 0.4rem;
+      font-size: 0.8rem;
+      color: var(--accent);
+    }
+    .post-divider {
+      text-align: center;
+      color: var(--border);
+      margin: 2.5rem 0;
+      font-size: 0.8rem;
+      letter-spacing: 0.3em;
+    }
+    .post-footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .post-footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .medium-cta {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.2rem;
+      border: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .medium-cta:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .series-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      gap: 1rem;
+    }
+    .series-nav a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s;
+      max-width: 45%;
+      line-height: 1.5;
+    }
+    .series-nav a:hover { color: var(--accent); }
+    .series-label {
+      font-size: 0.68rem;
+      color: var(--border);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    @media (max-width: 600px) {
+      .post-container { padding: 2.5rem 1.4rem 5rem; }
+      .post-title { font-size: 1.25rem; }
+    }
+
+    .post-body pre.srv-diagram { margin: 1.5rem 0 2rem; font-size: 0.74rem; }
+    .post-body ul { margin: 0 0 1.5rem 1.1rem; font-size: 0.88rem; color: #b8b2a8; line-height: 1.85; }
+    .post-body li { margin-bottom: 0.35rem; }
+    .post-body li strong { color: var(--text); font-weight: 500; }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <div class="statusbar">
+    <span class="status-dot"></span>
+    <span>online &nbsp;·&nbsp; bengaluru, india &nbsp;·&nbsp; v2.4.0</span>
+  </div>
+
+  <nav>
+    <a href="../index.html" class="nav-name" style="text-decoration:none; color: inherit;">sai.</a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">~/</a>
+      <a href="../index.html#changelog" onclick="window.location='../index.html'; setTimeout(()=>showSection&&showSection('changelog'),100)" class="nav-link">changelog</a>
+      <a href="../index.html" onclick="sessionStorage.setItem('section','log'); window.location='../index.html'" class="nav-link active">log</a>
+    </div>
+  </nav>
+
+  <div class="post-container">
+    <a href="../index.html" class="post-back">← back to sai.</a>
+
+    <div class="post-meta">
+      <span>2026-09-30</span>
+      <span class="post-meta-sep">·</span>
+      <span>infrastructure &nbsp;/&nbsp; self-hosting</span>
+      <span class="post-meta-sep">·</span>
+      <span>~6 min read</span>
+    </div>
+
+    <h1 class="post-title">Backseat: how an old phone runs my apps</h1>
+    <p class="post-subtitle">A supervisor, a tunnel and a careful deploy script turn an Android phone into a small, honest server.</p>
+
+    <div class="post-body">
+
+      <p>
+        Four web apps, their database, the AI service they share and the tunnel that carries their traffic all run on one old Android phone in my house. A comparable 4 GB cloud server would cost about ₹2,000 a month; the phone costs roughly ₹10 in electricity. The <a href="../index.html#server">server section</a> of this site shows it live. This post is about the software that makes it manageable: <strong>Backseat</strong>.
+      </p>
+
+      <h2>the pieces</h2>
+<pre class="srv-diagram"><span class="t">phone · termux</span>
+ ├─ backseat agent   <span class="m">supervises everything below</span>
+ │   ├─ 4 web apps   <span class="m">three next.js, one static site</span>
+ │   ├─ assistant    <span class="m">shared AI service</span>
+ │   ├─ pocketbase   <span class="m">one database for all apps</span>
+ │   └─ cloudflared  ──<span class="a">tunnel</span>──▶ cloudflare ◀── <span class="t">you</span>
+ └─ termux:boot      <span class="m">brings it all back after a reboot</span></pre>
+      <p>
+        Termux gives the phone a real Linux userland without rooting it. Termux:Boot starts the agent when the phone boots and takes a wake lock so Android doesn't put the CPU to sleep. Cloudflare's tunnel dials <em>out</em> from the phone, so there are no open ports, no port forwarding and no home IP in DNS.
+      </p>
+
+      <h2>the agent on the phone</h2>
+      <p>
+        <span class="code-inline">backseat-agent</span> is a small Flask service. Its main job is keeping apps alive:
+      </p>
+      <ul>
+        <li><strong>Supervision.</strong> Each app is a command and a folder, saved to disk. If a process dies, it's restarted with exponential backoff (2, 4, 8… up to 60 seconds), so a crash loop can't pin the CPU. Once an app has stayed up, its restart counter resets.</li>
+        <li><strong>Logs.</strong> Every app's output is captured and readable from the laptop.</li>
+        <li><strong>Tunnel awareness.</strong> It finds the running named tunnel and knows which hostnames it serves.</li>
+        <li><strong>Pairing.</strong> On first start it prints a QR code and an 8-character code. The laptop trades that for a session token, which both sides keep, so a restart doesn't need re-pairing. Anything that changes state needs that token.</li>
+        <li><strong>A public, read-only view.</strong> <span class="code-inline">/public/status</span> shows load, battery and each app's state, and nothing else: no commands, paths, ports, process IDs or logs. That's what the <a href="https://backseat-saiworks.nncs.in/dashboard" target="_blank" rel="noopener">live dashboard ↗</a> and this site read.</li>
+      </ul>
+
+      <h2>the laptop side</h2>
+      <p>
+        The <span class="code-inline">backseat</span> CLI talks to the agent over the local network: pair, list apps, start, stop, restart, tail logs, manage the tunnel, and reach the phone when I'm not home. The phone never builds anything. It only runs what the laptop sends it.
+      </p>
+
+      <h2>deploys that check themselves</h2>
+      <p>
+        On top of Backseat sits a deploy script with guardrails. It only ships code that's merged and tagged with CI green, builds it from a clean checkout, and checks the phone's battery, disk and dependencies first. It swaps the new build in beside the old one, then has to prove itself: a fresh process, every key page on the phone and through Cloudflare, a real demo sandbox with sign-in, and 20 seconds without a restart. If anything fails, the previous build goes back automatically and is tested again.
+      </p>
+
+      <h2>what android makes you learn</h2>
+      <ul>
+        <li><strong>It wants to sleep.</strong> A wake lock and unrestricted battery settings fixed background apps being paused.</li>
+        <li><strong>Symlinks.</strong> Node on Termux couldn't follow absolute links under <span class="code-inline">/data/data</span>, so every page that touched storage failed. Relative links fixed it, and the deploy now recreates them itself.</li>
+        <li><strong>Native modules.</strong> Image processing uses sharp's WebAssembly build, because its native one doesn't build on Android.</li>
+        <li><strong>Memory.</strong> Builds happen on the laptop; the phone only runs things.</li>
+        <li><strong>It's one device.</strong> Wi-Fi drops fall back to mobile data and the tunnel reconnects, and the battery covers a few hours of power cut. But if the phone itself dies, everything goes with it.</li>
+      </ul>
+
+      <h2>should you?</h2>
+      <p>
+        For side projects, demos and learning how servers actually behave, yes. It's cheap, and it teaches you process supervision, networking and deploy safety in a way a managed platform hides. For anything with an SLA, no.
+      </p>
+
+      <div class="post-divider">— — —</div>
+
+      <p>
+        Backseat is open source on <a href="https://github.com/SaiNayakk/backseat" target="_blank" rel="noopener">github ↗</a>.
+      </p>
+
+    </div>
+
+    <div class="series-nav">
+      <a href="homeloancalc.html" class="prev">
+        <span class="series-label">← previous</span>
+        How HomeLoanCalc works
+      </a>
+      <span></span>
+    </div>
+
+    <div class="post-footer">
+      <p>Written by Sai &nbsp;·&nbsp; <a href="mailto:sai31nayak@gmail.com">sai31nayak@gmail.com</a> &nbsp;·&nbsp; <a href="https://github.com/SaiNayakk" target="_blank" rel="noopener">github ↗</a></p>
+    </div>
+  </div>
+
+  <script src="../script.js"></script>
+</body>
+</html>
