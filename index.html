@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=2.4.5" />
+  <link rel="stylesheet" href="style.css?v=2.4.6" />
 </head>
 <body>
 
@@ -177,14 +177,19 @@
 
       <div class="srv-block">
         <div class="srv-h">how a deploy travels</div>
-<pre class="srv-diagram" aria-label="Deploy flow: the laptop builds the app and copies it to the phone over SSH; the phone runs it; Cloudflare's tunnel carries visitors to it.">laptop ──<span class="a">build</span>──▶ bundle ──<span class="a">ssh</span>──▶ <span class="t">phone · termux</span>
+<pre class="srv-diagram" aria-label="Deploy flow: a change goes through a pull request and CI, is merged and tagged; the laptop builds that exact commit and copies it to the phone over SSH; the phone runs it; Cloudflare's tunnel carries visitors to it.">branch ──<span class="a">pr · ci</span>──▶ main ──<span class="a">tag</span>──▶ <span class="t">v2.0.0</span>
+laptop ──<span class="a">build</span>──▶ bundle ──<span class="a">ssh</span>──▶ <span class="t">phone · termux</span>
                                 ├─ backseat agent  <span class="m">keeps every app alive</span>
                                 ├─ pocketbase      <span class="m">one database, all apps</span>
                                 └─ cloudflared ──<span class="a">tunnel</span>──▶ cloudflare ◀── <span class="t">you</span></pre>
         <ol class="srv-steps">
-          <li><span>build on the laptop.</span> the phone runs apps; it never compiles them.</li>
-          <li><span>ship over ssh.</span> the new build lands beside the old one, so a rollback is one rename.</li>
-          <li><span>backseat restarts it.</span> my agent on the phone supervises every app: restarts on crash, keeps logs, reports health.</li>
+          <li><span>every change is a pull request.</span> ci runs lint, types, tests and a production build; nothing red gets merged.</li>
+          <li><span>every release is tagged.</span> v1.0.0, v2.0.0… the previous version is always one tag away.</li>
+          <li><span>build only what's merged.</span> the laptop builds a clean checkout of main, so half-finished local work can't ship. the phone never compiles.</li>
+          <li><span>check the phone first.</span> battery, free space, and whether the app's dependencies changed. any doubt and it stops before touching anything.</li>
+          <li><span>swap, don't overwrite.</span> the new build moves in beside the old one, which stays as <code>.prev</code>.</li>
+          <li><span>prove it works.</span> backseat restarts the app, then smoke tests hit every key page on the phone and through cloudflare, start a real demo sandbox and sign in to it. it has to stay up 20 seconds without a restart.</li>
+          <li><span>or put it back.</span> if any check fails, the previous build is restored and tested again, on its own. the whole run takes about a minute.</li>
           <li><span>cloudflare carries traffic.</span> the tunnel dials out from the phone, so there are no open ports and no router setup.</li>
           <li><span>it survives reboots.</span> termux:boot brings everything back; a wake lock keeps the cpu awake.</li>
         </ol>
