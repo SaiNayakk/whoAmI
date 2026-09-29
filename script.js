@@ -530,21 +530,21 @@ function showSection(name) {
 const STATUS_MODULES = [
   {
     id: 'eventsnap',
-    name: 'eventsnap',
+    name: 'tasveerlee',
     url: 'https://eventsnap-saiworks.nncs.in/',
     displayUrl: 'eventsnap-saiworks.nncs.in',
     stack: 'Next.js · PocketBase · AWS Rekognition · Cloudflare R2',
-    infra: 'GCP VM · Cloudflare tunnel',
-    desc: 'Face-recognition photo delivery platform for Indian wedding photographers.',
+    infra: 'old Android phone · Cloudflare tunnel',
+    desc: 'Face-recognition photo delivery for Indian weddings: guests register with a selfie and get a private WhatsApp gallery of the photos they appear in. Formerly eventsnap.',
   },
   {
     id: 'invoicesnap',
     name: 'invoicesnap',
     url: 'https://invoicesnap-saiworks.nncs.in/',
     displayUrl: 'invoicesnap-saiworks.nncs.in',
-    stack: 'Next.js · PocketBase · Razorpay · @react-pdf/renderer',
-    infra: 'GCP VM · Cloudflare tunnel',
-    desc: 'GST-compliant invoice builder for Indian freelancers — send via WhatsApp with a Razorpay payment link.',
+    stack: 'Next.js · PocketBase · Gemini · @react-pdf/renderer',
+    infra: 'old Android phone · Cloudflare tunnel',
+    desc: 'GST-compliant invoices for Indian freelancers: AI drafts from a description, clients pay by UPI, reminders go out on WhatsApp.',
   },
   {
     id: 'menuqr',
@@ -566,7 +566,7 @@ const STATUS_MODULES = [
     url: 'https://waitlist-saiworks.nncs.in/',
     displayUrl: 'waitlist-saiworks.nncs.in',
     stack: 'Next.js · PocketBase · Radix UI · web-push',
-    infra: 'GCP VM · Cloudflare tunnel',
+    infra: 'old Android phone · Cloudflare tunnel',
     desc: 'Waitlist management with QR codes and web push notifications.',
   },
   {
