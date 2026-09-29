@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=2.4.5" />
+  <link rel="stylesheet" href="style.css?v=2.5.0" />
 </head>
 <body>
 
@@ -36,26 +36,25 @@
         <div class="hero-divider"></div>
         <h1 class="hero-tagline">I automate the boring stuff,<br>build what's missing,<br>and occasionally use an old Android phone as a server.</h1>
         <div class="hero-divider"></div>
-        <div class="currently-block">
-          <span class="currently-label">currently —</span>
-          <div class="currently-lines">
-            <div class="currently-line">
-              <span class="cl-key">writing code</span>
-              <span class="cl-sep">@</span>
-              <span class="cl-val">Fidelity Investments</span>
-            </div>
-            <div class="currently-line">
-              <span class="cl-key">self-hosting apps</span>
-              <span class="cl-sep">on</span>
-              <span class="cl-val">a ₹0 server (old Android phone)</span>
-            </div>
-            <div class="currently-line">
-              <span class="cl-key">always</span>
-              <span class="cl-sep">:</span>
-              <span class="cl-val">automating · building · thinking in systems</span>
-            </div>
-          </div>
+        <div class="adv" id="adv">
+          <div class="adv-bar"><span>~/life · a very short game</span><span>tap or type</span></div>
+          <div class="adv-out" id="adv-out" aria-live="polite"></div>
+          <form class="adv-form" id="adv-form" autocomplete="off">
+            <span class="adv-prompt">&gt;</span>
+            <input id="adv-in" type="text" spellcheck="false" autocapitalize="off" aria-label="Type a command, like look or north" placeholder="look" />
+          </form>
+          <div class="adv-chips" id="adv-chips" aria-label="Suggested commands"></div>
         </div>
+        <details class="adv-read">
+          <summary>or just read it</summary>
+          <p>I'm from Silvassa. That's where the core was installed, and I still go back often.</p>
+          <p>I studied Information Science at UVCE in Bengaluru, 2020 to 2024, and graduated with a CGPA of 8.94: four years of the theory behind things I was already building.</p>
+          <p>I interned at Fidelity twice, seven months in all. New joiners were waiting days to get set up, so I wrote a Python tool to cut that down. They offered; I stayed.</p>
+          <p>As a graduate trainee I shipped retry logic with exponential backoff for micro-deposits, and fixed things that looked fine on paper but quietly weren't.</p>
+          <p>Now I'm a software engineer there, turning mainframe brokerage systems into microservices. I mentor interns on the LEAP squad and run the sessions I once sat in. Our LEAP alumni team won the FMR India Excellence Award for culture and community in January 2025, and I was the youngest voice on a panel where I learned as much as I shared.</p>
+          <p>On August 2, 2025 I walked into my own home. Then the EMIs started.</p>
+          <p>Next: more automation to write, and more people to hand the ladder down to.</p>
+        </details>
         <div class="hero-links">
           <a href="https://github.com/SaiNayakk" target="_blank">github ↗</a>
           <span>·</span>
@@ -388,6 +387,7 @@
   </div>
 
   <script src="script.js?v=2.4.5"></script>
+  <script src="adventure.js?v=1"></script>
 
   <!-- Firebase (only loads when modules section has the canvas) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
