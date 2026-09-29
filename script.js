@@ -581,9 +581,12 @@ const STATUS_MODULES = [
   {
     id: 'backseat',
     name: 'backseat',
-    todo: true,
-    stack: 'Python · FastAPI · Typer · SSH/SCP · Cloudflare tunnels',
-    desc: 'Turns an old Android phone (Termux) into a personal deploy server with SSH and Cloudflare tunnel support.',
+    url: 'https://backseat-saiworks.nncs.in/ping',
+    link: 'https://backseat-saiworks.nncs.in/dashboard',
+    displayUrl: 'backseat-saiworks.nncs.in/dashboard',
+    stack: 'Python · Flask · Typer · SSH/SCP · Cloudflare tunnels',
+    infra: 'old Android phone · Termux',
+    desc: 'Turns an old Android phone (Termux) into a personal deploy server with SSH and Cloudflare tunnel support. The live dashboard of the phone serving these apps (password-protected).',
   },
   {
     id: 'homeloan-calc',
@@ -658,7 +661,7 @@ function statusRender(states) {
         <div class="status-card-header">
           <div class="status-name-group">
             <div class="status-name">${mod.name}</div>
-            <div class="status-url"><a href="${mod.url}" target="_blank">${mod.displayUrl} ↗</a></div>
+            <div class="status-url"><a href="${mod.link || mod.url}" target="_blank" rel="noopener">${mod.displayUrl} ↗</a></div>
           </div>
           <div class="status-badge">
             <span class="status-indicator ${dotClass}">${dotChar} ${label}</span>
