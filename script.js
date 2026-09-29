@@ -590,7 +590,7 @@ const STATUS_MODULES = [
     stack: 'Python · Flask · Typer · SSH/SCP · Cloudflare tunnels',
     infra: 'old Android phone · Termux',
     route: ['you', 'cloudflare', 'the phone itself'],
-    desc: 'Turns an old Android phone (Termux) into a personal deploy server with SSH and Cloudflare tunnel support. The live dashboard of the phone serving these apps (password-protected).',
+    desc: 'Turns an old Android phone (Termux) into a personal deploy server with SSH and Cloudflare tunnel support. Its live dashboard shows the phone serving these apps.',
   },
   {
     id: 'homeloan-calc',
