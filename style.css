@@ -1356,3 +1356,12 @@ footer a:hover { color: var(--text); }
 
   footer { padding: 1.2rem 1.4rem; font-size: 0.68rem; }
 }
+
+/* ── v2.3: phone vitals, route line, last-updated footer ── */
+.phone-vitals { color: var(--muted); }
+.route-arrow { color: var(--accent); }
+footer a.deploy-info { color: var(--muted); text-decoration: none; }
+footer a.deploy-info:hover { color: var(--text); }
+@media (max-width: 600px) {
+  .phone-vitals .pv-extra { display: none; }
+}

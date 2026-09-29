@@ -535,6 +535,7 @@ const STATUS_MODULES = [
     displayUrl: 'eventsnap-saiworks.nncs.in',
     stack: 'Next.js · PocketBase · AWS Rekognition · Cloudflare R2',
     infra: 'old Android phone · Cloudflare tunnel',
+    route: ['you', 'cloudflare', 'a phone in bengaluru', 'next.js'],
     desc: 'Face-recognition photo delivery for Indian weddings: guests register with a selfie and get a private WhatsApp gallery of the photos they appear in. Formerly eventsnap.',
   },
   {
@@ -544,6 +545,7 @@ const STATUS_MODULES = [
     displayUrl: 'invoicesnap-saiworks.nncs.in',
     stack: 'Next.js · PocketBase · Gemini · @react-pdf/renderer',
     infra: 'old Android phone · Cloudflare tunnel',
+    route: ['you', 'cloudflare', 'a phone in bengaluru', 'next.js'],
     desc: 'GST-compliant invoices for Indian freelancers: AI drafts from a description, clients pay by UPI, reminders go out on WhatsApp.',
   },
   {
@@ -567,6 +569,7 @@ const STATUS_MODULES = [
     displayUrl: 'waitlist-saiworks.nncs.in',
     stack: 'Next.js · PocketBase · Radix UI · web-push',
     infra: 'old Android phone · Cloudflare tunnel',
+    route: ['you', 'cloudflare', 'a phone in bengaluru', 'next.js'],
     desc: 'Waitlist management with QR codes and web push notifications.',
   },
   {
@@ -586,6 +589,7 @@ const STATUS_MODULES = [
     displayUrl: 'backseat-saiworks.nncs.in/dashboard',
     stack: 'Python · Flask · Typer · SSH/SCP · Cloudflare tunnels',
     infra: 'old Android phone · Termux',
+    route: ['you', 'cloudflare', 'the phone itself'],
     desc: 'Turns an old Android phone (Termux) into a personal deploy server with SSH and Cloudflare tunnel support. The live dashboard of the phone serving these apps (password-protected).',
   },
   {
@@ -671,7 +675,9 @@ function statusRender(states) {
         <div class="status-divider"></div>
         <div class="status-meta">
           <div class="status-meta-line">stack: <span>${mod.stack}</span></div>
-          <div class="status-meta-line">infra: <span>${mod.infra}</span></div>
+          ${mod.route
+            ? `<div class="status-meta-line">route: <span>${mod.route.join(' <span class="route-arrow">→</span> ')}</span></div>`
+            : `<div class="status-meta-line">infra: <span>${mod.infra}</span></div>`}
           <div class="status-meta-line">desc: <span>${mod.desc}</span></div>
         </div>
         <div class="status-uptime-bar" title="check history — oldest to newest">${segs}</div>
@@ -801,4 +807,74 @@ function closeDeployModal() {
 
   document.addEventListener('mouseleave', () => { cur.style.opacity = '0'; });
   document.addEventListener('mouseenter', () => { cur.style.opacity = '1'; });
+})();
+
+// ── PHONE VITALS (status bar) ──
+// The phone serving these apps reports a few public numbers (see backseat /public/vitals).
+(function () {
+  const el = document.getElementById('phone-vitals');
+  if (!el) return;
+  const URL = 'https://backseat-saiworks.nncs.in/public/vitals';
+
+  function ago(s) {
+    const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60);
+    return d ? `${d}d ${h}h` : h ? `${h}h ${m}m` : `${Math.max(m, 1)}m`;
+  }
+
+  async function refresh() {
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 6000);
+      const v = await (await fetch(URL, { cache: 'no-cache', signal: ctrl.signal })).json();
+      clearTimeout(t);
+      const parts = ['served by the phone', `${v.apps_up}/${v.apps_total} apps up`];
+      if (v.battery) {
+        parts.push(`batt ${v.battery.percent}%${v.battery.charging ? ' ⚡' : ''}`);
+        if (v.battery.temp_c != null) parts.push(`${Math.round(v.battery.temp_c)}°C`);
+      }
+      if (v.cpu_percent > 0) parts.push(`cpu ${v.cpu_percent}%`);
+      parts.push(`up ${ago(v.server_uptime_seconds)}`);
+      el.innerHTML = parts.map((p, i) => `&nbsp;·&nbsp; <span class="${i > 1 ? 'pv-extra' : ''}">${p}</span>`).join('');
+      el.title = 'live from the Android phone that serves these apps';
+    } catch {
+      el.textContent = '';   // phone unreachable: the status bar just looks like it always did
+    }
+  }
+  refresh();
+  setInterval(() => { if (document.visibilityState === 'visible') refresh(); }, 60000);
+})();
+
+// ── LAST UPDATED (footer) ──
+// Latest commit on the branch being served, cached for 10 minutes.
+(function () {
+  const BRANCH = 'v2.3';
+  const link = document.getElementById('deploy-info');
+  if (!link) return;
+  const KEY = 'deploy_info_' + BRANCH;
+
+  function ago(iso) {
+    const s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
+    if (s < 3600) return `${Math.max(1, Math.round(s / 60))}m ago`;
+    if (s < 86400) return `${Math.round(s / 3600)}h ago`;
+    return `${Math.round(s / 86400)}d ago`;
+  }
+  function show(c) {
+    link.textContent = `updated ${ago(c.date)} · ${c.sha}`;
+    link.href = `https://github.com/SaiNayakk/whoAmI/commit/${c.sha}`;
+    link.title = c.msg;
+    link.hidden = false;
+    document.querySelectorAll('.footer-sep.deploy-info').forEach(s => { s.hidden = false; });
+  }
+
+  let cached = null;
+  try { cached = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch {}
+  if (cached && Date.now() - cached.at < 600000) { show(cached); return; }
+  fetch(`https://api.github.com/repos/SaiNayakk/whoAmI/commits/${BRANCH}`)
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(j => {
+      const c = { sha: j.sha.slice(0, 7), date: j.commit.committer.date, msg: j.commit.message.split('\n')[0], at: Date.now() };
+      try { localStorage.setItem(KEY, JSON.stringify(c)); } catch {}
+      show(c);
+    })
+    .catch(() => { if (cached) show(cached); });
 })();
