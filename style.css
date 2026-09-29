@@ -1426,3 +1426,4 @@ footer a.deploy-info:hover { color: var(--text); }
 .status-url-sep { color: var(--border); margin: 0 0.15rem; }
 .status-url a.status-url-live { color: var(--muted); }
 .status-url a.status-url-live:hover { color: var(--accent); }
+.srv-steps li code { font-size: 0.75rem; color: var(--text); }
