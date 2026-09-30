@@ -1325,6 +1325,12 @@ footer a.deploy-info:hover { color: var(--text); }
 .srv-list { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
 .srv-list li { font-size: 0.8rem; color: var(--muted); padding-left: 1.2rem; position: relative; }
 .srv-list li::before { content: '–'; position: absolute; left: 0; color: var(--accent); }
+.srv-tc { font-size: 0.6rem; color: var(--accent); margin-left: 0.15rem; }
+.srv-terms { margin-top: 1.4rem; padding-top: 0.9rem; border-top: 1px dashed var(--border); }
+.srv-terms-h { font-size: 0.62rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.srv-terms ol { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; }
+.srv-terms li { font-size: 0.66rem; line-height: 1.55; color: var(--muted); opacity: 0.85; }
+.srv-terms li::marker { color: var(--accent); font-size: 0.6rem; }
 .srv-links { margin-top: 3rem; font-size: 0.75rem; display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; color: var(--muted); }
 .srv-links a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); }
 .srv-links a:hover { border-color: var(--accent); }
