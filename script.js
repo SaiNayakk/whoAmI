@@ -372,10 +372,7 @@ function showSection(name) {
   inputLine.appendChild(promptEl); inputLine.appendChild(input);
   const hintEl = document.createElement('div'); hintEl.className = 'meme-hint';
   hintEl.textContent = '\` to close \xb7 type + enter to activate';
-  const deployOptions = document.createElement('div');
-  deployOptions.className = 'meme-deploy-options';
-  deployOptions.style.display = 'none';
-  panel.appendChild(hdr); panel.appendChild(inputLine); panel.appendChild(hintEl); panel.appendChild(deployOptions);
+  panel.appendChild(hdr); panel.appendChild(inputLine); panel.appendChild(hintEl);
   document.body.appendChild(panel);
 
   const indicator = document.createElement('div'); indicator.id = 'meme-indicator';
@@ -453,34 +450,16 @@ function showSection(name) {
     return false;
   }
 
-  const DEPLOY_PROJECTS = [
-    { id: 'eventsnap',  label: 'eventsnap' },
-    { id: 'deploybot',  label: 'deploybot'  },
-  ];
-
-  function showDeployOptions() {
-    deployOptions.innerHTML = '';
-    DEPLOY_PROJECTS.forEach(p => {
-      const btn = document.createElement('button');
-      btn.className = 'meme-deploy-btn';
-      btn.textContent = '→ ' + p.label;
-      btn.onclick = () => { deployOptions.style.display = 'none'; togglePanel(false); deployProject(p.id); };
-      deployOptions.appendChild(btn);
-    });
-    deployOptions.style.display = 'flex';
-  }
-
   input.addEventListener('keydown', e => {
     if (e.key === 'Enter') {
       e.preventDefault();
       const val = input.value.trim().toLowerCase();
       if (val === '' || val === 'stop') { stopAll(); togglePanel(false); return; }
-      if (val === 'deploy') { input.value = ''; hintEl.textContent = 'pick a project:'; showDeployOptions(); return; }
       const matched = tryActivate(input.value);
       if (matched) togglePanel(false);
     }
-    if (e.key === 'Escape') { e.preventDefault(); deployOptions.style.display = 'none'; togglePanel(false); }
-    if (e.key === '`') { e.preventDefault(); deployOptions.style.display = 'none'; togglePanel(false); }
+    if (e.key === 'Escape') { e.preventDefault(); togglePanel(false); }
+    if (e.key === '`') { e.preventDefault(); togglePanel(false); }
   });
 
   let isOpen = false;
@@ -495,7 +474,7 @@ function showSection(name) {
   }
   function togglePanel(force) {
     const opening = force !== undefined ? force : !isOpen;
-    if (!opening) { isOpen = false; panel.classList.remove('meme-open'); deployOptions.style.display = 'none'; return; }
+    if (!opening) { isOpen = false; panel.classList.remove('meme-open'); return; }
     showDisclaimer(doOpen);
   }
 
@@ -574,15 +553,6 @@ const STATUS_MODULES = [
     infra: 'old Android phone · Cloudflare tunnel',
     route: ['you', 'cloudflare', 'my phone', 'next.js'],
     desc: 'Waitlist management with QR codes and web push notifications.',
-  },
-  {
-    id: 'deploybot',
-    name: 'deploybot',
-    url: 'https://deploy-saiworks.nncs.in/health',
-    displayUrl: 'deploy-saiworks.nncs.in',
-    stack: 'Python · FastAPI · PM2 · Cloudflare tunnels',
-    infra: 'GCP VM · Cloudflare tunnel',
-    desc: 'Self-hosted deployment API — manages rolling deploys for all GCP VM projects via HTTP.',
   },
   {
     id: 'backseat',
@@ -759,51 +729,6 @@ setInterval(() => {
   const sec = document.getElementById('modules');
   if (sec && sec.classList.contains('active')) runStatusChecks();
 }, 60000);
-
-// ── DEPLOY ──
-async function deployProject(deployId) {
-  let key = sessionStorage.getItem('deploy_key');
-  if (!key) {
-    key = prompt('deploy key:');
-    if (!key) return;
-    sessionStorage.setItem('deploy_key', key);
-  }
-
-  const modal = document.getElementById('deploy-modal');
-  const output = document.getElementById('deploy-modal-output');
-  const title = document.getElementById('deploy-modal-title');
-  title.textContent = '$ deploy ' + deployId;
-  output.textContent = '';
-  modal.style.display = 'flex';
-
-  try {
-    const res = await fetch('https://deploy-saiworks.nncs.in/deploy/' + deployId, {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + key },
-    });
-
-    if (res.status === 401) {
-      sessionStorage.removeItem('deploy_key');
-      output.textContent = '✕ wrong key. try again.';
-      return;
-    }
-
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      output.textContent += decoder.decode(value);
-      output.scrollTop = output.scrollHeight;
-    }
-  } catch (e) {
-    output.textContent += '\n✕ error: ' + e.message;
-  }
-}
-
-function closeDeployModal() {
-  document.getElementById('deploy-modal').style.display = 'none';
-}
 
 // terminal block cursor
 (function () {
