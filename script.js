@@ -750,10 +750,15 @@ let _vitals = null, _vitalsAt = 0;
 function phoneVitals() {
   if (_vitals && Date.now() - _vitalsAt < 30000) return _vitals;
   _vitalsAt = Date.now();
-  const ctrl = new AbortController();
-  setTimeout(() => ctrl.abort(), 6000);
-  _vitals = fetch('https://backseat-saiworks.nncs.in/public/vitals', { cache: 'no-cache', signal: ctrl.signal })
-    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+  const once = () => {
+    const ctrl = new AbortController();
+    setTimeout(() => ctrl.abort(), 6000);
+    return fetch('https://backseat-saiworks.nncs.in/public/vitals', { cache: 'no-cache', signal: ctrl.signal })
+      .then(r => r.ok ? r.json() : Promise.reject(r.status));
+  };
+  // The tunnel reconnects within a few seconds when the phone's network blips, so try once more.
+  _vitals = once()
+    .catch(() => new Promise(r => setTimeout(r, 4000)).then(once))
     .catch(e => { _vitals = null; throw e; });
   return _vitals;
 }
@@ -782,7 +787,9 @@ function phoneVitals() {
       el.innerHTML = parts.map((p, i) => `&nbsp;·&nbsp; <span class="${i > 1 ? 'pv-extra' : ''}">${p}</span>`).join('');
       el.title = 'live from the Android phone that serves these apps';
     } catch {
-      el.textContent = '';   // phone unreachable: the status bar just looks like it always did
+      // Keep the last numbers through a short outage; with none yet, the bar looks like it always did.
+      if (!el.innerHTML) el.textContent = '';
+      setTimeout(refresh, 15000);
     }
   }
   refresh();
@@ -792,7 +799,7 @@ function phoneVitals() {
 // ── LAST UPDATED (footer) ──
 // Latest commit on the branch being served, cached for 10 minutes.
 (function () {
-  const BRANCH = 'v2.3';
+  const BRANCH = 'master';
   const link = document.getElementById('deploy-info');
   if (!link) return;
   const KEY = 'deploy_info_' + BRANCH;
@@ -840,10 +847,15 @@ function phoneVitals() {
       $('srv-temp').textContent = v.battery && v.battery.temp_c != null ? `${Math.round(v.battery.temp_c)}°C` : 'n/a';
       $('srv-up').textContent = dur(v.server_uptime_seconds);
       $('srv-note').textContent = 'live from the phone · refreshes every minute';
+      lastOk = Date.now();
     } catch {
-      $('srv-note').textContent = "the phone isn't answering right now. which is, admittedly, one of the trade-offs below.";
+      $('srv-note').textContent = lastOk
+        ? `reconnecting to the phone… these numbers are from ${dur(Math.round((Date.now() - lastOk) / 1000))} ago.`
+        : "the phone isn't answering right now. which is, admittedly, one of the trade-offs below.";
+      setTimeout(refresh, 15000);
     }
   }
+  let lastOk = 0;
   document.querySelector('a[data-section="server"]')?.addEventListener('click', refresh);
   setInterval(() => { if ($('server').classList.contains('active') && document.visibilityState === 'visible') refresh(); }, 60000);
   refresh();
