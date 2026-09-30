@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=2.4.7" />
+  <link rel="stylesheet" href="style.css?v=2.4.8" />
 </head>
 <body>
 
@@ -207,14 +207,23 @@ laptop ──<span class="a">build</span>──▶ bundle ──<span class="a">
       </div>
 
       <div class="srv-block">
-        <div class="srv-h">the honest trade-offs</div>
+        <div class="srv-h">built to stay up</div>
         <ul class="srv-list">
-          <li>if the home wifi drops, the phone falls back to mobile data and the tunnel reconnects on its own.</li>
-          <li>it's still one device: if the phone itself goes down, so does everything on it.</li>
-          <li>a power cut is covered by the phone's own battery, for a few hours.</li>
-          <li>android wants to sleep background apps; a wake lock and unrestricted battery settle that.</li>
-          <li>great for side projects and demos. i wouldn't promise anyone an sla on it.</li>
+          <li>home wifi drops? the phone switches to mobile data and the tunnel reconnects by itself.<sup class="srv-tc">1</sup></li>
+          <li>power cut? the phone's own battery keeps every app running for hours.<sup class="srv-tc">2</sup></li>
+          <li>android likes to put background apps to sleep; a wake lock and unrestricted battery keep them awake.<sup class="srv-tc">3</sup></li>
         </ul>
+
+        <div class="srv-terms" role="note" aria-label="terms and conditions">
+          <p class="srv-terms-h">terms &amp; conditions apply</p>
+          <ol>
+            <li>reconnection is not instantaneous. visitors may see errors for the seconds, occasionally minutes, a reconnect takes. past performance: one evening off the charger, about 110 dropped connections.</li>
+            <li>a power cut also takes the router offline, so the phone serves on battery and mobile data at the same time. "for hours" is not a contractual unit of time.</li>
+            <li>the wake lock keeps apps running; android reserves the right to throttle the network while unplugged. best enjoyed on the charger.</li>
+            <li>this service runs on one (1) phone. if the phone goes down, so does everything on it.</li>
+            <li>suitable for side projects and demos. no uptime guarantee (sla) is offered, expressed or implied.</li>
+          </ol>
+        </div>
       </div>
 
       <div class="srv-links">
@@ -384,7 +393,7 @@ laptop ──<span class="a">build</span>──▶ bundle ──<span class="a">
   </footer>
 
 
-  <script src="script.js?v=2.4.9"></script>
+  <script src="script.js?v=2.4.10"></script>
 
   <!-- Firebase (only loads when modules section has the canvas) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>

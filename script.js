@@ -853,7 +853,7 @@ function phoneVitals() {
     } catch {
       $('srv-note').textContent = lastOk
         ? `reconnecting to the phone… these numbers are from ${dur(Math.round((Date.now() - lastOk) / 1000))} ago.`
-        : "the phone isn't answering right now. which is, admittedly, one of the trade-offs below.";
+        : "the phone isn't answering right now. see the fine print below.";
       setTimeout(refresh, 15000);
     }
   }
