@@ -753,7 +753,9 @@ function phoneVitals() {
   const once = () => {
     const ctrl = new AbortController();
     setTimeout(() => ctrl.abort(), 6000);
-    return fetch('https://backseat-saiworks.nncs.in/public/vitals', { cache: 'no-cache', signal: ctrl.signal })
+    // A plain GET with a cache-busting query: `cache: 'no-cache'` makes Safari/WebKit add
+    // request headers, which turns this into a CORS preflight and gets the request blocked.
+    return fetch('https://backseat-saiworks.nncs.in/public/vitals?t=' + Date.now(), { signal: ctrl.signal })
       .then(r => r.ok ? r.json() : Promise.reject(r.status));
   };
   // The tunnel reconnects within a few seconds when the phone's network blips, so try once more.
